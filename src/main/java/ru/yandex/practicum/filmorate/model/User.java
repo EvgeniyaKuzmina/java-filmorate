@@ -9,7 +9,6 @@ import java.time.LocalDate;
 public class User {
 
     private Integer userId;
-    @Email
     private String email;
     private String login;
     private String userName;
