@@ -22,43 +22,40 @@ public class UserController {
 
     // создание пользователя
     @PostMapping(value = "/user")
-    public String createUser(@Valid @RequestBody User user) {
-        try {
-            ValidationException.checkName(user); // проверка логина пользователя
-            if (user.getUserName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
-                user.setUserName(user.getLogin());
-            }
-            ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя
-            user.setUserId(Id.getId(users.keySet())); // сгенерировали id
-            log.info("Пользователь {} успешно добавлен", user.getLogin());
-            users.put(user.getUserId(), user);
-            return "Пользователь " + user.getUserName() + " успешно добавлен";
-        } catch (ValidationException e) {
-            return e.getMessage();
+
+    public String createUser(@Valid @RequestBody User user) throws ValidationException {
+
+        ValidationException.checkName(user); // проверка логина пользователя
+        if (user.getUserName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
+            user.setUserName(user.getLogin());
         }
+        ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя
+        user.setUserId(Id.getId(users.keySet())); // сгенерировали id
+        log.info("Пользователь {} успешно добавлен", user.getLogin());
+        users.put(user.getUserId(), user);
+        return "Пользователь " + user.getUserName() + " успешно добавлен";
+
     }
 
     // обновление пользователя
     @PutMapping(value = "/user")
-    public String updateUser(@Valid @RequestBody User user) {
-        try {
-            if (users.containsKey(user.getUserId())) {
-                User updUser = users.get(user.getUserId());
-                ValidationException.checkName(user); // проверка логина пользователя
-                updUser.setUserName(user.getUserName()); // Обновили логина пользователя
-                updUser.setEmail(user.getEmail()); // обновили email
-                ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя
-                updUser.setBirthDay(user.getBirthDay()); // обновили дату рождения
-                users.put(updUser.getUserId(), updUser); // положили в таблицу обновлённые данные
-                log.info("Данные пользователя {} успешно обновлены", user);
-                return "Данные пользователя " + user.getUserName() + " успешно обновлены";
-            } else {
-                log.warn("Введён неверный id");
-                throw new ValidationException("пользователя с ID " + user.getUserId() + " нет");
-            }
-        } catch (ValidationException e) {
-            return e.getMessage();
+    public String updateUser(@Valid @RequestBody User user) throws ValidationException {
+
+        if (users.containsKey(user.getUserId())) {
+            User updUser = users.get(user.getUserId());
+            ValidationException.checkName(user); // проверка логина пользователя
+            updUser.setUserName(user.getUserName()); // Обновили логина пользователя
+            updUser.setEmail(user.getEmail()); // обновили email
+            ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя
+            updUser.setBirthDay(user.getBirthDay()); // обновили дату рождения
+            users.put(updUser.getUserId(), updUser); // положили в таблицу обновлённые данные
+            log.info("Данные пользователя {} успешно обновлены", user);
+            return "Данные пользователя " + user.getUserName() + " успешно обновлены";
+        } else {
+            log.warn("Введён неверный id");
+            throw new ValidationException("пользователя с ID " + user.getUserId() + " нет");
         }
+
 
     }
 

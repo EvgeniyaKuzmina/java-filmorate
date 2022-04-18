@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationExceptionFilm;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
+
 public class FilmController {
 
     private final Map<Integer, Film> films = new HashMap<>();
@@ -23,26 +25,21 @@ public class FilmController {
 
     // добавление нового фильма
     @PostMapping(value = "/film")
-    public String createFilm(@Valid @RequestBody Film film) {
-        try {
+    public String createFilm(@Valid @RequestBody Film film) throws ValidationException {
             ValidationException.checkName(film); // проверка названия фильма
             ValidationExceptionFilm.checkDescription(film); // проверка описания фильма
             ValidationExceptionFilm.checkDataOfRelease(film); // проверка даты релиза фильма
             ValidationExceptionFilm.checkDuration(film); // проверка продолжительности фильма
             film.setFilmId(Id.getId(films.keySet())); // сгенерировали Id
-
             log.info("Фильм {} успешно добавлен", film);
             films.put(film.getFilmId(), film);
             return "Фильм " + film.getFilmName() + " успешно добавлен";
-        } catch (ValidationException e) {
-            return e.getMessage();
-        }
     }
 
     //обновление существующего фильма
     @PutMapping(value = "/film")
-    public String updateFilm(@RequestBody Film film) {
-        try {
+    public String updateFilm(@RequestBody Film film) throws ValidationException {
+
             if (films.containsKey(film.getFilmId())) {
                 Film upbFilm = films.get(film.getFilmId());
                 ValidationExceptionFilm.checkDescription(film); // проверка описания фильма
@@ -56,9 +53,7 @@ public class FilmController {
                 log.warn("Введён неверный id");
                 throw new ValidationException("Фильма с ID " + film.getFilmId() + " нет");
             }
-        } catch (ValidationException e) {
-            return e.getMessage();
-        }
+
     }
 
     // получение всех фильмов

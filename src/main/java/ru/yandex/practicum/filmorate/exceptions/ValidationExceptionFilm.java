@@ -1,14 +1,18 @@
 package ru.yandex.practicum.filmorate.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 
 @Slf4j
+@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 public class ValidationExceptionFilm extends ValidationException {
     private static final LocalDate EARLIEST_DATA_OF_RELEASE = LocalDate.of(1895, 12, 28);
-
 
     public ValidationExceptionFilm(String messages) {
         super(messages);
@@ -18,6 +22,7 @@ public class ValidationExceptionFilm extends ValidationException {
     public static void checkDescription(Film film) throws ValidationException {
         if (film.getDescription().length() > 200) {
             log.warn("Описание фильма слишком большое,");
+
             throw new ValidationExceptionFilm("В описании фильма " + film.getDescription().length() + " символов." +
                                                       " Допустимое количество символом в описании 200");
         }
