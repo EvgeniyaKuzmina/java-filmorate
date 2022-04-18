@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.time.LocalDate;
 
 @Slf4j
-@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 public class ValidationExceptionUser extends ValidationException {
 
     public ValidationExceptionUser(String messages) {

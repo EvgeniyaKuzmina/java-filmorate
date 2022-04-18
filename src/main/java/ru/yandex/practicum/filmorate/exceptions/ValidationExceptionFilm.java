@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 
 @Slf4j
-@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 public class ValidationExceptionFilm extends ValidationException {
     private static final LocalDate EARLIEST_DATA_OF_RELEASE = LocalDate.of(1895, 12, 28);
 

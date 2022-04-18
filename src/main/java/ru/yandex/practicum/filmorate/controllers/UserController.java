@@ -23,8 +23,7 @@ public class UserController {
 
     // создание пользователя
     @PostMapping(value = "/users")
-
-    public String createUser(@Valid @RequestBody User user) throws ValidationException {
+    public String createUser(@RequestBody User user) throws ValidationException {
 
         ValidationException.checkName(user); // проверка логина пользователя
         if (user.getUserName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
@@ -41,7 +40,7 @@ public class UserController {
 
     // обновление пользователя
     @PutMapping(value = "/users")
-    public String updateUser(@Valid @RequestBody User user) throws ValidationException {
+    public String updateUser(@RequestBody User user) throws ValidationException {
 
         if (users.containsKey(user.getUserId())) {
             User updUser = users.get(user.getUserId());

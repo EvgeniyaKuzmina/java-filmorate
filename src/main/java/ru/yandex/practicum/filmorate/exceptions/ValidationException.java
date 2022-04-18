@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 @Slf4j
-@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 public class ValidationException extends Exception {
 
     private final String messages;
