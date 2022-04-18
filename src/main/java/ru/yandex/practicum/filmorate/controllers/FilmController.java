@@ -24,7 +24,7 @@ public class FilmController {
     }
 
     // добавление нового фильма
-    @PostMapping(value = "/film")
+    @PostMapping(value = "/films")
     public String createFilm(@Valid @RequestBody Film film) throws ValidationException {
             ValidationException.checkName(film); // проверка названия фильма
             ValidationExceptionFilm.checkDescription(film); // проверка описания фильма
@@ -37,7 +37,7 @@ public class FilmController {
     }
 
     //обновление существующего фильма
-    @PutMapping(value = "/film")
+    @PutMapping(value = "/films")
     public String updateFilm(@RequestBody Film film) throws ValidationException {
 
             if (films.containsKey(film.getFilmId())) {

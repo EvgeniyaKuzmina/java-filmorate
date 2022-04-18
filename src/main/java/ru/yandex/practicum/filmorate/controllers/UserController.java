@@ -21,7 +21,7 @@ public class UserController {
     }
 
     // создание пользователя
-    @PostMapping(value = "/user")
+    @PostMapping(value = "/users")
 
     public String createUser(@Valid @RequestBody User user) throws ValidationException {
 
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     // обновление пользователя
-    @PutMapping(value = "/user")
+    @PutMapping(value = "/users")
     public String updateUser(@Valid @RequestBody User user) throws ValidationException {
 
         if (users.containsKey(user.getUserId())) {
