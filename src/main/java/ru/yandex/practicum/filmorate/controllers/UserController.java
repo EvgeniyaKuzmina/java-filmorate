@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.exceptions.ValidationExceptionFilm;
 import ru.yandex.practicum.filmorate.exceptions.ValidationExceptionUser;
 import ru.yandex.practicum.filmorate.model.Id;
 import ru.yandex.practicum.filmorate.model.User;
@@ -29,6 +30,7 @@ public class UserController {
         if (user.getUserName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
             user.setUserName(user.getLogin());
         }
+        ValidationExceptionUser.checkEmial(user);
         ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя
         user.setUserId(Id.getId(users.keySet())); // сгенерировали id
         log.info("Пользователь {} успешно добавлен", user.getLogin());
@@ -45,6 +47,7 @@ public class UserController {
             User updUser = users.get(user.getUserId());
             ValidationException.checkName(user); // проверка логина пользователя
             updUser.setUserName(user.getUserName()); // Обновили логина пользователя
+            ValidationExceptionUser.checkEmial(user);
             updUser.setEmail(user.getEmail()); // обновили email
             ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя
             updUser.setBirthDay(user.getBirthDay()); // обновили дату рождения

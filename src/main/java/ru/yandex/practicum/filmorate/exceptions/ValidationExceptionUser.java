@@ -24,4 +24,11 @@ public class ValidationExceptionUser extends ValidationException {
             throw new ValidationException("Дата рождения указан не корректно");
         }
     }
+    //проверка email адреса
+    public static void checkEmial(User user) throws ValidationException {
+        if (!user.getEmail().contains("@") || user.getEmail().isBlank()) {
+            log.warn("Дата рождения указана позднее текущей даты");
+            throw new ValidationException("Дата рождения указан не корректно");
+        }
+    }
 }
