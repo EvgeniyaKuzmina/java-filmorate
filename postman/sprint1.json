@@ -207,7 +207,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"est adipisicing\",\n  \"id\": 1,\n  \"email\": \"mail@yandex.ru\",\n  \"birthday\": \"1946-08-20\"\n}",
+							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"estadipisicing\",\n  \"id\": 1,\n  \"email\": \"mail@yandex.ru\",\n  \"birthday\": \"1946-08-20\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -232,7 +232,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"estadipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
