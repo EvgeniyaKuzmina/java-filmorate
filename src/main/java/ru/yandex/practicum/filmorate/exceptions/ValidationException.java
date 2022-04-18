@@ -28,7 +28,7 @@ public class ValidationException extends Exception {
             }
         }
         if (obj instanceof User) {
-            if (((User) obj).getLogin().isBlank() || ((User) obj).getLogin() == null) {
+            if (((User) obj).getLogin().isBlank() || ((User) obj).getLogin() == null || ((User) obj).getLogin().contains(" ")) {
                 log.warn("Не указан логин пользователя");
                 throw new ValidationException("Логин пользователя не может быть пустым");
             }
