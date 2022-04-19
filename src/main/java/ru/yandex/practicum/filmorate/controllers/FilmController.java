@@ -1,12 +1,15 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationExceptionFilm;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Id;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,10 +24,9 @@ public class FilmController {
     }
 
     // добавление нового фильма
+
     @PostMapping(value = "/films")
-    public String createFilm(@RequestBody Film film) throws ValidationException {
-        ValidationException.checkName(film); // проверка названия фильма
-        ValidationExceptionFilm.checkDescription(film); // проверка описания фильма
+    public String createFilm(@Valid  @RequestBody Film film) throws ValidationException {
         ValidationExceptionFilm.checkDataOfRelease(film); // проверка даты релиза фильма
         ValidationExceptionFilm.checkDuration(film); // проверка продолжительности фильма
         film.setFilmId(Id.getId(films.keySet())); // сгенерировали Id
@@ -35,10 +37,9 @@ public class FilmController {
 
     //обновление существующего фильма
     @PutMapping(value = "/films")
-    public String updateFilm(@RequestBody Film film) throws ValidationException {
+    public String updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (films.containsKey(film.getFilmId())) {
             Film upbFilm = films.get(film.getFilmId());
-            ValidationExceptionFilm.checkDescription(film); // проверка описания фильма
             upbFilm.setDescription(film.getDescription()); // обновили описание фильма
             ValidationExceptionFilm.checkDataOfRelease(film); // проверка даты релиза фильма
             upbFilm.setReleaseDate(film.getReleaseDate()); // обновили дату релиза

@@ -12,6 +12,14 @@ public class ValidationExceptionUser extends ValidationException {
         super(messages);
     }
 
+    //проверка названия фильма или имя пользователя
+    public static void checkLogin(User user) throws ValidationException {
+        if (user.getLogin().contains(" ")) {
+            log.warn("Не указан логин пользователя");
+            throw new ValidationException("Логин пользователя не может быть пустым");
+        }
+    }
+
     // проверка даты рождения пользователя
     public static void checkBirthDay(User user) throws ValidationException {
         if (user.getBirthday().isAfter(LocalDate.now())) {

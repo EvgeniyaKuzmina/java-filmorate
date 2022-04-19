@@ -41,18 +41,6 @@ class UserControllerTest {
         }
     }
 
-    // проверяем что пользователь с пустым логином не будет создан
-    @Test
-    void shouldNotCreateUserWithEmptyLogin() {
-        try {
-            user = new User("test@ya.ru", "", "", LocalDate.of(2022, 1, 1));
-            String result = userController.createUser(user);
-            assertEquals(new HashMap<>(), userController.getUsers());
-            assertEquals("Логин пользователя не может быть пустым", result);
-        } catch (ValidationException e) {
-            e.getMessage();
-        }
-    }
 
     // проверяем что пользователь не будет создан, если вместо логина указаны пробелы
     @Test

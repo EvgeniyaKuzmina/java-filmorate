@@ -1,6 +1,9 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationExceptionUser;
@@ -24,7 +27,7 @@ public class UserController {
     @PostMapping(value = "/users")
     public String createUser(@Valid @RequestBody User user) throws ValidationException {
 
-        ValidationException.checkName(user); // проверка логина пользователя
+        ValidationExceptionUser.checkLogin(user); // проверка логина пользователя
         if (user.getName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
             user.setName(user.getLogin());
         }
@@ -35,13 +38,19 @@ public class UserController {
         return "Пользователь " + user.getName() + " успешно добавлен";
     }
 
+
+//    @PostMapping
+//    public ResponseEntity<String> valid(@Valid @RequestBody User user) {
+//        return ResponseEntity.ok("valid");
+//    }
+
     // обновление пользователя
     @PutMapping(value = "/users")
     public String updateUser(@Valid @RequestBody User user) throws ValidationException {
 
         if (users.containsKey(user.getUserId())) {
             User updUser = users.get(user.getUserId());
-            ValidationException.checkName(user); // проверка логина пользователя
+            ValidationExceptionUser.checkLogin(user); // проверка логина пользователя
             updUser.setName(user.getName()); // Обновили логина пользователя
             updUser.setEmail(user.getEmail()); // обновили email
             ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя

@@ -13,16 +13,6 @@ public class ValidationExceptionFilm extends ValidationException {
         super(messages);
     }
 
-    // проверка описания фильма
-    public static void checkDescription(Film film) throws ValidationException {
-        if (film.getDescription().length() > 200) {
-            log.warn("Описание фильма слишком большое,");
-
-            throw new ValidationExceptionFilm("В описании фильма " + film.getDescription().length() + " символов." +
-                                                      " Допустимое количество символом в описании 200");
-        }
-    }
-
     // проверка даты релиза
     public static void checkDataOfRelease(Film film) throws ValidationException {
         if (film.getReleaseDate().isBefore(EARLIEST_DATA_OF_RELEASE)) {

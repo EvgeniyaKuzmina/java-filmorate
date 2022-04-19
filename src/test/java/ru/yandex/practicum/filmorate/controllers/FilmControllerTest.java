@@ -17,59 +17,6 @@ class FilmControllerTest {
     FilmController filmController = new FilmController();
     private Film film;
 
-    // проверяем что фильм с пустым названием не будет добавлен
-    @Test
-    void shouldNotCreateFilmWithEmptyName() throws ValidationException {
-        try {
-            film = new Film("", "Очень очень длинное описание фильма -------------------------------------" +
-                    "---------------------------------------------------------------------------------------------" +
-                    "-----------------------------------------------------------------------------------------------",
-                            LocalDate.of(1895, 12, 29), Duration.ofHours(10));
-            String result = filmController.createFilm(film);
-            assertEquals(new HashMap<>(), filmController.getFilms());
-            assertEquals("Название фильма не может быть пустым", result);
-        } catch (ValidationException e) {
-            e.getMessage();
-        }
-
-    }
-
-    // проверяем что фильм с пробелами вместо названия не будет добавлен
-    @Test
-    void shouldNotCreateFilmWithBlancName() throws ValidationException {
-        try {
-            film = new Film("   ", "Очень очень длинное описание фильма -------------------------------------" +
-                    "---------------------------------------------------------------------------------------------" +
-                    "-----------------------------------------------------------------------------------------------",
-                            LocalDate.of(1895, 12, 29), Duration.ofHours(10));
-            String result = filmController.createFilm(film);
-            assertEquals(new HashMap<>(), filmController.getFilms());
-            assertEquals("Название фильма не может быть пустым", result);
-        } catch (ValidationException e) {
-            e.getMessage();
-        }
-
-    }
-
-    // проверяем что фильм с описанием более 200 символов не будет добавлен
-    @Test
-    void shouldNotCreateFilmDescriptionLengthMore200() throws ValidationException {
-        try {
-            film = new Film("Название фильма",
-                            "Очень очень длинное описание фильма -------------------------------------" +
-                                    "---------------------------------------------------------------------------------------------" +
-                                    "-----------------------------------------------------------------------------------------------",
-                            LocalDate.of(1895, 12, 29), Duration.ofHours(10));
-            String result = filmController.createFilm(film);
-            assertEquals(new HashMap<>(), filmController.getFilms());
-            assertEquals("В описании фильма " + film.getDescription().length() + " символов." +
-                                 " Допустимое количество символом в описании 200", result);
-        } catch (ValidationException e) {
-            e.getMessage();
-        }
-
-    }
-
     // проверяем что фильм с описанием в 200 символов будет добавлен
     @Test
     void shouldCreateFilmDescriptionLength200() throws ValidationException {

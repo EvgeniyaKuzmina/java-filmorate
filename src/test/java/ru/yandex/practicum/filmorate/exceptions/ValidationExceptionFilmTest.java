@@ -23,16 +23,6 @@ class ValidationExceptionFilmTest {
 
     }
 
-    @Test
-    public void checkDescriptionFilmNotBeMoreLength200() {
-        try {
-            ValidationExceptionFilm.checkDescription(film);
-        } catch (ValidationException e) {
-            assertEquals("В описании фильма " + film.getDescription().length() + " символов." +
-                                 " Допустимое количество символом в описании 200", e.getMessage());
-        }
-
-    }
 
     @Test
     public void checkDataOfReleaseFilmNotBeEarlier28_12_1895() {
