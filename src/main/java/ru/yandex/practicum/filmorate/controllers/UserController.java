@@ -33,7 +33,6 @@ public class UserController {
         log.info("Пользователь {} успешно добавлен", user.getLogin());
         users.put(user.getUserId(), user);
         return "Пользователь " + user.getName() + " успешно добавлен";
-
     }
 
     // обновление пользователя
@@ -54,8 +53,6 @@ public class UserController {
             log.warn("Введён неверный id");
             throw new ValidationException("пользователя с ID " + user.getUserId() + " нет");
         }
-
-
     }
 
     // получение всех пользователей
