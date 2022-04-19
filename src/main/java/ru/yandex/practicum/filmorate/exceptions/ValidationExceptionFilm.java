@@ -1,10 +1,6 @@
 package ru.yandex.practicum.filmorate.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -29,7 +25,7 @@ public class ValidationExceptionFilm extends ValidationException {
 
     // проверка даты релиза
     public static void checkDataOfRelease(Film film) throws ValidationException {
-        if (film.getDateOfRelease().isBefore(EARLIEST_DATA_OF_RELEASE)) {
+        if (film.getReleaseDate().isBefore(EARLIEST_DATA_OF_RELEASE)) {
             log.warn("Дата релиза указана ранее {}", EARLIEST_DATA_OF_RELEASE);
             throw new ValidationExceptionFilm("Вы не можете указать дату релиза ранее " + EARLIEST_DATA_OF_RELEASE);
         }

@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationExceptionFilm;
 import ru.yandex.practicum.filmorate.exceptions.ValidationExceptionUser;
 import ru.yandex.practicum.filmorate.model.Id;
 import ru.yandex.practicum.filmorate.model.User;
@@ -23,36 +22,34 @@ public class UserController {
 
     // создание пользователя
     @PostMapping(value = "/users")
-    public String createUser(@RequestBody User user) throws ValidationException {
+    public String createUser(@Valid @RequestBody User user) throws ValidationException {
 
         ValidationException.checkName(user); // проверка логина пользователя
-        if (user.getUserName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
-            user.setUserName(user.getLogin());
+        if (user.getName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
+            user.setName(user.getLogin());
         }
-        ValidationExceptionUser.checkEmial(user);
         ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя
         user.setUserId(Id.getId(users.keySet())); // сгенерировали id
         log.info("Пользователь {} успешно добавлен", user.getLogin());
         users.put(user.getUserId(), user);
-        return "Пользователь " + user.getUserName() + " успешно добавлен";
+        return "Пользователь " + user.getName() + " успешно добавлен";
 
     }
 
     // обновление пользователя
     @PutMapping(value = "/users")
-    public String updateUser(@RequestBody User user) throws ValidationException {
+    public String updateUser(@Valid @RequestBody User user) throws ValidationException {
 
         if (users.containsKey(user.getUserId())) {
             User updUser = users.get(user.getUserId());
             ValidationException.checkName(user); // проверка логина пользователя
-            updUser.setUserName(user.getUserName()); // Обновили логина пользователя
-            ValidationExceptionUser.checkEmial(user);
+            updUser.setName(user.getName()); // Обновили логина пользователя
             updUser.setEmail(user.getEmail()); // обновили email
             ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя
-            updUser.setBirthDay(user.getBirthDay()); // обновили дату рождения
+            updUser.setBirthday(user.getBirthday()); // обновили дату рождения
             users.put(updUser.getUserId(), updUser); // положили в таблицу обновлённые данные
             log.info("Данные пользователя {} успешно обновлены", user);
-            return "Данные пользователя " + user.getUserName() + " успешно обновлены";
+            return "Данные пользователя " + user.getName() + " успешно обновлены";
         } else {
             log.warn("Введён неверный id");
             throw new ValidationException("пользователя с ID " + user.getUserId() + " нет");

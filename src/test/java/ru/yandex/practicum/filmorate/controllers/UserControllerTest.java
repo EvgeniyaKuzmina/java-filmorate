@@ -74,7 +74,7 @@ class UserControllerTest {
             user = new User("test@ya.ru", "Логин", "", LocalDate.of(2022, 1, 1));
             String result = userController.createUser(user);
             assertFalse(userController.getUsers().isEmpty());
-            assertEquals(user.getUserName(), user.getLogin());
+            assertEquals(user.getName(), user.getLogin());
             assertEquals("Пользователь " + user.getLogin() + " успешно добавлен", result);
         } catch (ValidationException e) {
             e.getMessage();

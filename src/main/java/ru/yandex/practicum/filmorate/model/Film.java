@@ -11,13 +11,13 @@ public class Film {
     private final Duration duration;
     private final String filmName;
     private Integer filmId;
-    private LocalDate dateOfRelease;
+    private LocalDate releaseDate;
     private String description;
 
-    public Film(String filmName, String description, LocalDate dateOfRelease, Duration duration) {
+    public Film(String filmName, String description, LocalDate releaseDate, Duration duration) {
         this.filmName = filmName;
         this.description = description;
-        this.dateOfRelease = dateOfRelease;
+        this.releaseDate = releaseDate;
         this.duration = duration;
     }
 

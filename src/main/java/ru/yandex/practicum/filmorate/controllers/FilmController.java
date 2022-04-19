@@ -1,14 +1,12 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationExceptionFilm;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Id;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +41,7 @@ public class FilmController {
                 ValidationExceptionFilm.checkDescription(film); // проверка описания фильма
                 upbFilm.setDescription(film.getDescription()); // обновили описание фильма
                 ValidationExceptionFilm.checkDataOfRelease(film); // проверка даты релиза фильма
-                upbFilm.setDateOfRelease(film.getDateOfRelease()); // обновили дату релиза
+                upbFilm.setReleaseDate(film.getReleaseDate()); // обновили дату релиза
                 films.put(film.getFilmId(), upbFilm); // положили обратно в мапу обновлённые данные
                 log.info("Данные фильма {} успешно обновлены", film);
                 return "Данные фильма " + film.getFilmName() + " успешно обновлены";
