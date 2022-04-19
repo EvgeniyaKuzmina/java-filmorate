@@ -23,7 +23,7 @@ public class FilmController {
     // добавление нового фильма
     @PostMapping(value = "/films")
     public String createFilm(@RequestBody Film film) throws ValidationException {
-        ValidationException.checkName(film); // проверка названия фильма
+        ValidationExceptionFilm.checkName(film); // проверка названия фильма
         ValidationExceptionFilm.checkDescription(film); // проверка описания фильма
         ValidationExceptionFilm.checkDataOfRelease(film); // проверка даты релиза фильма
         ValidationExceptionFilm.checkDuration(film); // проверка продолжительности фильма

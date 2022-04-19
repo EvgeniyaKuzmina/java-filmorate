@@ -25,4 +25,14 @@ class ValidationExceptionUserTest {
         }
     }
 
+    @Test
+     void checkLoginForUserNotBeEmpty() {
+        user = new User("test@ya.ru", "", "", LocalDate.of(2000, 01, 01));
+        try {
+            ValidationExceptionUser.checkLogin(user);
+        } catch (ValidationException e) {
+            assertEquals("Логин пользователя не может быть пустым", e.getMessage());
+        }
+    }
+
 }

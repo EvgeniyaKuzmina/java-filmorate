@@ -24,34 +24,41 @@ class ValidationExceptionFilmTest {
     }
 
     @Test
-    public void checkDescriptionFilmNotBeMoreLength200() {
+    void checkDescriptionFilmNotBeMoreLength200() {
         try {
             ValidationExceptionFilm.checkDescription(film);
         } catch (ValidationException e) {
             assertEquals("В описании фильма " + film.getDescription().length() + " символов." +
                                  " Допустимое количество символом в описании 200", e.getMessage());
         }
-
     }
 
     @Test
-    public void checkDataOfReleaseFilmNotBeEarlier28_12_1895() {
+    void checkDataOfReleaseFilmNotBeEarlier28_12_1895() {
         try {
             ValidationExceptionFilm.checkDataOfRelease(film);
         } catch (ValidationException e) {
             assertEquals("Вы не можете указать дату релиза ранее " + EARLIEST_DATA_OF_RELEASE, e.getMessage());
         }
-
     }
 
     @Test
-    public void checkDurationFilmNotLess0() {
+    void checkDurationFilmNotLess0() {
         try {
             ValidationExceptionFilm.checkDuration(film);
         } catch (ValidationException e) {
             assertEquals("Продолжительности фильма не может быть отрицательной.", e.getMessage());
         }
+    }
 
+    @Test
+    void checkNameForFilmNotBeEmpty() {
+        film = new Film("", "Описание фильма 1", LocalDate.of(2022, 02, 25), Duration.ofHours(10));
+        try {
+            ValidationExceptionFilm.checkName(film);
+        } catch (ValidationException e) {
+            assertEquals("Название фильма не может быть пустым", e.getMessage());
+        }
     }
 
 

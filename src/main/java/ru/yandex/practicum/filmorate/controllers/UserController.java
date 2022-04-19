@@ -24,7 +24,7 @@ public class UserController {
     @PostMapping(value = "/users")
     public String createUser(@Valid @RequestBody User user) throws ValidationException {
 
-        ValidationException.checkName(user); // проверка логина пользователя
+        ValidationExceptionUser.checkLogin(user); // проверка логина пользователя
         if (user.getName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
             user.setName(user.getLogin());
         }
@@ -41,7 +41,7 @@ public class UserController {
 
         if (users.containsKey(user.getUserId())) {
             User updUser = users.get(user.getUserId());
-            ValidationException.checkName(user); // проверка логина пользователя
+            ValidationExceptionUser.checkLogin(user); // проверка логина пользователя
             updUser.setName(user.getName()); // Обновили логина пользователя
             updUser.setEmail(user.getEmail()); // обновили email
             ValidationExceptionUser.checkBirthDay(user); // проверка даты рождения пользователя

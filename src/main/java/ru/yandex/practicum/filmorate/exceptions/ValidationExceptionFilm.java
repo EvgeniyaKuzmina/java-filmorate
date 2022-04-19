@@ -39,5 +39,13 @@ public class ValidationExceptionFilm extends ValidationException {
         }
     }
 
+    //проверка названия фильма
+    public static void checkName(Film film) throws ValidationException {
+        if (film.getFilmName().isBlank() || film.getFilmName() == null) {
+            log.warn("Не указано название фильма");
+            throw new ValidationException("Название фильма не может быть пустым");
+        }
+    }
+
 
 }

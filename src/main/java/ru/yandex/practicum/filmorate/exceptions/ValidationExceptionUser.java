@@ -19,4 +19,13 @@ public class ValidationExceptionUser extends ValidationException {
             throw new ValidationException("Дата рождения указан не корректно");
         }
     }
+
+    //проверка логина пользователя
+    public static void checkLogin(User user) throws ValidationException {
+        if (user.getLogin().isBlank() || user.getLogin() == null || user.getLogin().contains(" ")) {
+            log.warn("Не указан логин пользователя");
+            throw new ValidationException("Логин пользователя не может быть пустым");
+        }
+
+    }
 }
