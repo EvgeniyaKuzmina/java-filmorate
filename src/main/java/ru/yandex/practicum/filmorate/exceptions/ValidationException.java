@@ -9,7 +9,6 @@ public class ValidationException extends Exception {
         this.messages = messages;
     }
 
-
     @Override
     public String getMessage() {
         return messages;
