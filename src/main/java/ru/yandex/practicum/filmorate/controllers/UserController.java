@@ -3,9 +3,9 @@ package ru.yandex.practicum.filmorate.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.validation.ValidationUser;
 import ru.yandex.practicum.filmorate.model.Id;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.validation.ValidationUser;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -23,7 +23,6 @@ public class UserController {
     // создание пользователя
     @PostMapping(value = "/users")
     public String createUser(@Valid @RequestBody User user) throws ValidationException {
-
         ValidationUser.checkLogin(user); // проверка логина пользователя
         if (user.getName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
             user.setName(user.getLogin());

@@ -3,9 +3,9 @@ package ru.yandex.practicum.filmorate.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.validation.ValidationFilm;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Id;
+import ru.yandex.practicum.filmorate.validation.ValidationFilm;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -24,8 +24,6 @@ public class FilmController {
     // добавление нового фильма
     @PostMapping(value = "/films")
     public String createFilm(@Valid @RequestBody Film film) throws ValidationException {
-      //  ValidationFilm.checkName(film); // проверка названия фильма
-       // ValidationFilm.checkDescription(film); // проверка описания фильма
         ValidationFilm.checkDataOfRelease(film); // проверка даты релиза фильма
         ValidationFilm.checkDuration(film); // проверка продолжительности фильма
         film.setFilmId(Id.getId(films.keySet())); // сгенерировали Id
@@ -39,7 +37,6 @@ public class FilmController {
     public String updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (films.containsKey(film.getFilmId())) {
             Film upbFilm = films.get(film.getFilmId());
-          //  ValidationFilm.checkDescription(film); // проверка описания фильма
             upbFilm.setDescription(film.getDescription()); // обновили описание фильма
             ValidationFilm.checkDataOfRelease(film); // проверка даты релиза фильма
             upbFilm.setReleaseDate(film.getReleaseDate()); // обновили дату релиза
