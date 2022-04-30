@@ -7,10 +7,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class Film {
 
+    private Set<User> likes; // хранит пользователей, кто поставил лайк фильму
     private final Duration duration;
     @NotBlank
     @NotNull
@@ -27,4 +29,7 @@ public class Film {
         this.duration = duration;
     }
 
+    public void setLike(User user) {
+        likes.add(user);
+    }
 }

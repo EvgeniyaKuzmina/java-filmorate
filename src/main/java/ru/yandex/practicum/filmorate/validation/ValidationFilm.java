@@ -1,8 +1,13 @@
 package ru.yandex.practicum.filmorate.validation;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 
@@ -16,9 +21,12 @@ import java.time.LocalDate;
 * */
 
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class ValidationFilm {
 
     private static final LocalDate EARLIEST_DATA_OF_RELEASE = LocalDate.of(1895, 12, 28);
+    private final InMemoryFilmStorage inMemoryFilmStorage;
 
     // проверка даты релиза
     public static void checkDataOfRelease(Film film) throws ValidationException {
@@ -33,6 +41,12 @@ public class ValidationFilm {
         if (film.getDuration().isNegative()) {
             log.warn("Введено отрицательно значение для продолжительности фильма ");
             throw new ValidationException("Продолжительности фильма не может быть отрицательной.");
+        }
+    }
+
+    public void checkFilmById(Integer id) {
+        if (!inMemoryFilmStorage.getFilms().containsKey(id)) {
+            throw new FilmNotFoundException(String.format("Фильма c id %d нет", id));
         }
     }
 

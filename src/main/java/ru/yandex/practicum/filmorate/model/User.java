@@ -6,10 +6,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class User {
 
+    private Set<User> friends;
     private Integer userId;
     @Email
     @NotNull
@@ -27,5 +29,9 @@ public class User {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
+    }
+
+    public void setFriends(User friend) {
+        friends.add(friend);
     }
 }
