@@ -21,6 +21,8 @@ public class Film {
     private Integer id;
     private LocalDate releaseDate;
     @Length(max = 200)
+    @NotBlank
+    @NotNull
     private String description;
 
     public Film(String name, String description, LocalDate releaseDate, Duration duration) {

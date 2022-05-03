@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.constant.Constants;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -88,10 +89,10 @@ public class UserController {
     public String addFriend(@PathVariable(required = false) String id, @PathVariable(required = false) String friendId) throws
                                                                                                                         ValidationException {
         if (id == null || friendId == null) {
-            throw new ValidationException(Constants.USER_ID_IS_EMPTY);
+            throw new UserNotFoundException(Constants.USER_ID_IS_EMPTY);
         }
         if (Integer.parseInt(id) <= 0 || Integer.parseInt(friendId) <= 0) {
-            throw new ValidationException(Constants.USER_ID_INCORRECT);
+            throw new UserNotFoundException(Constants.USER_ID_INCORRECT);
         }
         return userService.addFriend(Integer.parseInt(id), Integer.parseInt(friendId));
     }
