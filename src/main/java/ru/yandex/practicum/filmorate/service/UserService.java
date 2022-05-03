@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.validation.ValidationUser;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +64,7 @@ public class UserService {
         Map<Integer, String> otherUserFriends = inMemoryUserStorage.getUsers().get(otherUserId).getFriends();
         List<Integer> commonListFriends = userFriends.keySet().stream()
                                                      .filter(otherUserFriends::containsKey)
-                                                     .toList();
+                                                     .collect(Collectors.toList());
         commonListFriends.forEach(u -> commonFriends.put(u, inMemoryUserStorage.getUsers().get(u).getLogin()));
         return commonFriends;
 

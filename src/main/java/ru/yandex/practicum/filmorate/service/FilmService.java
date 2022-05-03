@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.validation.ValidationUser;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.yandex.practicum.filmorate.constant.Constants.STANDARD_SIZE;
 
@@ -61,7 +62,7 @@ public class FilmService {
         HashMap<String, String> likedFilmName = new HashMap<>();
         List<Film> sortedFilms = inMemoryFilmStorage.getFilms().values().stream()
                                                     .sorted(this::compare)
-                                                    .toList();
+                                                    .collect(Collectors.toList());
         if (count > sortedFilms.size() && sortedFilms.size() < STANDARD_SIZE) {
             sortedFilms.forEach(f -> likedFilmName.put("Фильм " + f.getFilmName(), "рейтинг " + f.getLikes().size()));
             return likedFilmName;
