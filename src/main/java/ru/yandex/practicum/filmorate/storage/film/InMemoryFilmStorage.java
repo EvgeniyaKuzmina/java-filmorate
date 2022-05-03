@@ -3,8 +3,8 @@ package ru.yandex.practicum.filmorate.storage.film;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Id;
@@ -44,7 +44,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             return "Данные фильма " + film.getFilmName() + " успешно обновлены";
         } else {
             log.warn("Введён неверный id");
-            throw new ValidationException("Фильма с ID " + film.getFilmId() + " нет");
+            throw new FilmNotFoundException("Фильма с ID " + film.getFilmId() + " нет");
         }
     }
 
@@ -54,5 +54,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     // метод удаления фильма
-    public String removeFilm(Film film) {return null; }
+    public String removeFilm(Film film) {
+        return null;
+    }
 }

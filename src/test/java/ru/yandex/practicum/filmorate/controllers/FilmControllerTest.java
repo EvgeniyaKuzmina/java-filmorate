@@ -1,8 +1,11 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -13,9 +16,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class FilmControllerTest {
+    private InMemoryFilmStorage inMemoryFilmStorage;
+    private FilmService filmService;
     private static final LocalDate EARLIEST_DATA_OF_RELEASE = LocalDate.of(1895, 12, 28);
-    FilmController filmController = new FilmController();
+    FilmController filmController;
     private Film film;
+
+    @Autowired
+    public FilmControllerTest(InMemoryFilmStorage inMemoryFilmStorage, FilmService filmService, FilmController filmController) {
+        this.inMemoryFilmStorage = inMemoryFilmStorage;
+        this.filmService = filmService;
+        this.filmController = filmController;
+    }
 
     // проверяем что фильм с пустым названием не будет добавлен
     @Test
@@ -26,7 +38,7 @@ class FilmControllerTest {
                     "-----------------------------------------------------------------------------------------------",
                             LocalDate.of(1895, 12, 29), Duration.ofHours(10));
             String result = filmController.createFilm(film);
-            assertEquals(new HashMap<>(), filmController.getFilms());
+            assertEquals(new HashMap<>(), inMemoryFilmStorage.getFilms());
             assertEquals("Название фильма не может быть пустым", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -43,7 +55,7 @@ class FilmControllerTest {
                     "-----------------------------------------------------------------------------------------------",
                             LocalDate.of(1895, 12, 29), Duration.ofHours(10));
             String result = filmController.createFilm(film);
-            assertEquals(new HashMap<>(), filmController.getFilms());
+            assertEquals(new HashMap<>(), inMemoryFilmStorage.getFilms());
             assertEquals("Название фильма не может быть пустым", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -61,7 +73,7 @@ class FilmControllerTest {
                                     "-----------------------------------------------------------------------------------------------",
                             LocalDate.of(1895, 12, 29), Duration.ofHours(10));
             String result = filmController.createFilm(film);
-            assertEquals(new HashMap<>(), filmController.getFilms());
+            assertEquals(new HashMap<>(), inMemoryFilmStorage.getFilms());
             assertEquals("В описании фильма " + film.getDescription().length() + " символов." +
                                  " Допустимое количество символом в описании 200", result);
         } catch (ValidationException e) {
@@ -78,7 +90,7 @@ class FilmControllerTest {
                 "----------------------------------",
                         LocalDate.of(1895, 12, 29), Duration.ofHours(10));
         String result = filmController.createFilm(film);
-        assertFalse(filmController.getFilms().isEmpty());
+        assertFalse(inMemoryFilmStorage.getFilms().isEmpty());
         assertEquals("Фильм " + film.getFilmName() + " успешно добавлен", result);
 
     }
@@ -93,7 +105,7 @@ class FilmControllerTest {
                                     "----------------------------------",
                             LocalDate.of(1895, 12, 27), Duration.ofHours(10));
             String result = filmController.createFilm(film);
-            assertEquals(new HashMap<>(), filmController.getFilms());
+            assertEquals(new HashMap<>(), inMemoryFilmStorage.getFilms());
             assertEquals("Вы не можете указать дату релиза ранее " + EARLIEST_DATA_OF_RELEASE, result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -109,7 +121,7 @@ class FilmControllerTest {
                 "----------------------------------",
                         LocalDate.of(1895, 12, 28), Duration.ofHours(10));
         String result = filmController.createFilm(film);
-        assertFalse(filmController.getFilms().isEmpty());
+        assertFalse(inMemoryFilmStorage.getFilms().isEmpty());
         assertEquals("Фильм " + film.getFilmName() + " успешно добавлен", result);
 
     }
@@ -124,7 +136,7 @@ class FilmControllerTest {
                                     "----------------------------------",
                             LocalDate.of(1895, 12, 28), Duration.ofHours(-1));
             String result = filmController.createFilm(film);
-            assertEquals(new HashMap<>(), filmController.getFilms());
+            assertEquals(new HashMap<>(), inMemoryFilmStorage.getFilms());
             assertEquals("Продолжительности фильма не может быть отрицательной.", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -142,7 +154,7 @@ class FilmControllerTest {
                                     "----------------------------------",
                             LocalDate.of(1895, 12, 28), Duration.ofHours(0));
             String result = filmController.createFilm(film);
-            assertFalse(filmController.getFilms().isEmpty());
+            assertFalse(inMemoryFilmStorage.getFilms().isEmpty());
             assertEquals("Фильм " + film.getFilmName() + " успешно добавлен", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -157,11 +169,11 @@ class FilmControllerTest {
             film = new Film("Название фильма", "Старое описание фильма",
                             LocalDate.of(1895, 12, 28), Duration.ofHours(0));
             filmController.createFilm(film);
-            Map<Integer, Film> filmWithOldInformation = filmController.getFilms();
+            Map<Integer, Film> filmWithOldInformation = inMemoryFilmStorage.getFilms();
             film = new Film("Название фильма", "Новое описание фильма",
                             LocalDate.of(1895, 12, 28), Duration.ofHours(0));
             String result = filmController.updateFilm(film);
-            assertEquals(filmWithOldInformation, filmController.getFilms());
+            assertEquals(filmWithOldInformation, inMemoryFilmStorage.getFilms());
             assertEquals("Фильма с ID " + film.getFilmId() + " нет", result);
         } catch (ValidationException e) {
             e.getMessage();

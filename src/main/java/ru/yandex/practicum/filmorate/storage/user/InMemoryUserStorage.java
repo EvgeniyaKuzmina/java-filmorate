@@ -3,8 +3,8 @@ package ru.yandex.practicum.filmorate.storage.user;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Id;
 import ru.yandex.practicum.filmorate.model.User;
@@ -17,10 +17,9 @@ import java.util.Map;
 @Service
 @Getter
 @Setter
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
 
     private final Map<Integer, User> users = new HashMap<>();
-
 
     // метод для создания пользователя
     public String createUser(User user) throws ValidationException {
@@ -49,7 +48,7 @@ public class InMemoryUserStorage implements UserStorage{
             return "Данные пользователя " + user.getName() + " успешно обновлены";
         } else {
             log.warn("Введён неверный id");
-            throw new ValidationException("пользователя с ID " + user.getUserId() + " нет");
+            throw new UserNotFoundException("пользователя с ID " + user.getUserId() + " нет");
         }
 
     }
@@ -60,5 +59,7 @@ public class InMemoryUserStorage implements UserStorage{
     }
 
     // метод удаления пользователя
-    public String removeUser(User user) { return null; }
+    public String removeUser(User user) {
+        return null;
+    }
 }

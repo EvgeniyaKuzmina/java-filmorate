@@ -1,8 +1,10 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -12,16 +14,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class UserControllerTest {
-    UserController userController = new UserController();
+    private InMemoryUserStorage inMemoryUserStorage;
     private User user;
+
+    @Autowired
+    public UserControllerTest(InMemoryUserStorage inMemoryUserStorage) {
+        this.inMemoryUserStorage = inMemoryUserStorage;
+    }
+
 
     // проверяем что пользователь с датой рождения позднее текущей не будет создан
     @Test
     void shouldNotCreateUserWithBirthDayLateToday() {
         try {
             user = new User("test@ya.ru", "Логин", "", LocalDate.of(2023, 1, 1));
-            String result = userController.createUser(user);
-            assertEquals(new HashMap<>(), userController.getUsers());
+            String result = inMemoryUserStorage.createUser(user);
+            assertEquals(new HashMap<>(), inMemoryUserStorage.getUsers());
             assertEquals("Дата рождения указан не корректно", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -33,8 +41,8 @@ class UserControllerTest {
     void shouldCreateUserWithBirthDayToday() {
         try {
             user = new User("test@ya.ru", "Логин", "", LocalDate.of(2022, 4, 18));
-            String result = userController.createUser(user);
-            assertFalse(userController.getUsers().isEmpty());
+            String result = inMemoryUserStorage.createUser(user);
+            assertFalse(inMemoryUserStorage.getUsers().isEmpty());
             assertEquals("Пользователь " + user.getLogin() + " успешно добавлен", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -46,8 +54,8 @@ class UserControllerTest {
     void shouldNotCreateUserWithEmptyLogin() {
         try {
             user = new User("test@ya.ru", "", "", LocalDate.of(2022, 1, 1));
-            String result = userController.createUser(user);
-            assertEquals(new HashMap<>(), userController.getUsers());
+            String result = inMemoryUserStorage.createUser(user);
+            assertEquals(new HashMap<>(), inMemoryUserStorage.getUsers());
             assertEquals("Логин пользователя не может быть пустым", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -59,8 +67,8 @@ class UserControllerTest {
     void shouldNotCreateUserWithBlancLogin() {
         try {
             user = new User("test@ya.ru", "  ", "", LocalDate.of(2022, 1, 1));
-            String result = userController.createUser(user);
-            assertEquals(new HashMap<>(), userController.getUsers());
+            String result = inMemoryUserStorage.createUser(user);
+            assertEquals(new HashMap<>(), inMemoryUserStorage.getUsers());
             assertEquals("Логин пользователя не может быть пустым", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -72,8 +80,8 @@ class UserControllerTest {
     void shouldCreateUserWithEmptyName() {
         try {
             user = new User("test@ya.ru", "Логин", "", LocalDate.of(2022, 1, 1));
-            String result = userController.createUser(user);
-            assertFalse(userController.getUsers().isEmpty());
+            String result = inMemoryUserStorage.createUser(user);
+            assertFalse(inMemoryUserStorage.getUsers().isEmpty());
             assertEquals(user.getName(), user.getLogin());
             assertEquals("Пользователь " + user.getLogin() + " успешно добавлен", result);
         } catch (ValidationException e) {
@@ -86,11 +94,11 @@ class UserControllerTest {
     void shouldNotUpdateUserWithoutID() {
         try {
             user = new User("test@ya.ru", "Логин", "", LocalDate.of(2022, 1, 1));
-            userController.createUser(user);
-            Map<Integer, User> userWithOldInformation = userController.getUsers();
+            inMemoryUserStorage.createUser(user);
+            Map<Integer, User> userWithOldInformation = inMemoryUserStorage.getUsers();
             user = new User("test@ya.ru", "Логин", "", LocalDate.of(2022, 1, 1));
-            String result = userController.updateUser(user);
-            assertEquals(userWithOldInformation, userController.getUsers());
+            String result = inMemoryUserStorage.updateUser(user);
+            assertEquals(userWithOldInformation, inMemoryUserStorage.getUsers());
             assertEquals("пользователя с ID " + user.getUserId() + " нет", result);
         } catch (ValidationException e) {
             e.getMessage();
@@ -102,12 +110,12 @@ class UserControllerTest {
     void shouldGetAllUsers() {
         try {
             user = new User("test@ya.ru", "Логин 1", "Пользователь 2", LocalDate.of(2022, 1, 1));
-            userController.createUser(user);
+            inMemoryUserStorage.createUser(user);
             User user2 = new User("test@ya.ru", "Логин 2", "Пользователь 2", LocalDate.of(2022, 1, 1));
-            userController.createUser(user2);
+            inMemoryUserStorage.createUser(user2);
             assertEquals(1, user.getUserId());
             assertEquals(2, user2.getUserId());
-            assertFalse(userController.getAllUsers().isEmpty());
+            assertFalse(inMemoryUserStorage.getAllUsers().isEmpty());
         } catch (ValidationException e) {
             e.getMessage();
         }
