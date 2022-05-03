@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.constant.Constants;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -51,6 +52,14 @@ public class InMemoryFilmStorage implements FilmStorage {
     // метод для получения списка всех фильмов
     public Map<Integer, Film> getAllFilms() {
         return films;
+    }
+
+    // получение фильма по id
+    public Film getFilmById(Integer id) {
+        if (!films.containsKey(id)) {
+            throw new FilmNotFoundException(String.format(Constants.FILM_NOT_EXIST, id));
+        }
+        return films.get(id);
     }
 
     // метод удаления фильма

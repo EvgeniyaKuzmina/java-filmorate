@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.constant.Constants;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -49,6 +50,20 @@ public class FilmController {
 
     // TODO метод получить фильма по Id
 
+    //получение фильма по id
+    @GetMapping(value  = "{id}")
+    @ResponseBody
+    public Film getFilmById(@Valid @PathVariable(required = false) String id) throws ValidationException {
+        if (id == null) {
+            throw new ValidationException(Constants.FILM_ID_IS_EMPTY);
+        }
+        if (Integer.parseInt(id) <= 0) {
+            throw new FilmNotFoundException(Constants.FILM_ID_INCORRECT);
+        }
+        return inMemoryFilmStorage.getFilmById(Integer.parseInt(id));
+    }
+
+    // Добавление в друзья пользователя по Id
     @PutMapping(value  = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
     @ResponseBody
     public String addLikeToFilm(@Valid @PathVariable(required = false) String id,
@@ -57,17 +72,18 @@ public class FilmController {
             throw new ValidationException(Constants.FILM_ID_IS_EMPTY);
         }
         if (Integer.parseInt(id) <= 0) {
-            throw new ValidationException(Constants.FILM_ID_INCORRECT);
+            throw new FilmNotFoundException(Constants.FILM_ID_INCORRECT);
         }
         if (userId == null) {
             throw new ValidationException(Constants.USER_ID_IS_EMPTY);
         }
         if (Integer.parseInt(userId) <= 0) {
-            throw new ValidationException(Constants.USER_ID_INCORRECT);
+            throw new FilmNotFoundException(Constants.USER_ID_INCORRECT);
         }
         return filmService.addLike(Integer.parseInt(id), Integer.parseInt(userId));
     }
 
+    //удаление пользователя из друзей по id
     @DeleteMapping(value  = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
     @ResponseBody
     public String removeLikeFromFilm(@Valid @PathVariable(required = false) String id,
@@ -87,6 +103,7 @@ public class FilmController {
         return filmService.removeLike(Integer.parseInt(id), Integer.parseInt(userId));
     }
 
+    // получение списка самых популярных фильмов
     @GetMapping("/popular")
     @ResponseBody
     public HashMap<String, String> mostPopularFilm(@Valid @RequestParam(defaultValue = "10", required = false) Integer count) throws

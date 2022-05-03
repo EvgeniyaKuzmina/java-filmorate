@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.constant.Constants;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Id;
@@ -56,6 +57,15 @@ public class InMemoryUserStorage implements UserStorage {
     // метод для получения списка всех пользователей
     public Map<Integer, User> getAllUsers() {
         return users;
+    }
+
+    // метод для получения пользователя по id
+    public User getUsersById(Integer id) {
+        if (!users.containsKey(id)){
+            throw new UserNotFoundException(String.format(Constants.USER_NOT_EXIST, id));
+        }
+        return users.get(id);
+
     }
 
     // метод удаления пользователя

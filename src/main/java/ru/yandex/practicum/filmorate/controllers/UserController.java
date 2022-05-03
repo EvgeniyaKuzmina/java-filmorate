@@ -45,7 +45,18 @@ public class UserController {
     }
 
     // получение пользователя по id
-    //TODO написать метод возвращающий пользователя по Id
+    @GetMapping(value = "{id}")
+    @ResponseBody
+    public User getCommonFriends(@PathVariable(required = false) String id)
+            throws ValidationException {
+        if (id == null) {
+            throw new ValidationException(Constants.USER_ID_IS_EMPTY);
+        }
+        if (Integer.parseInt(id) <= 0) {
+            throw new UserNotFoundException(Constants.USER_ID_INCORRECT);
+        }
+        return inMemoryUserStorage.getUsersById(Integer.parseInt(id));
+    }
 
     // получаем список друзей общих с другим пользователем.
     @GetMapping(value = {"{id}/friends/common/{otherId}", "/friends/common/{otherId}", "{id}/friends/common/", "/friends/common/"})
@@ -89,7 +100,7 @@ public class UserController {
     public String addFriend(@PathVariable(required = false) String id, @PathVariable(required = false) String friendId) throws
                                                                                                                         ValidationException {
         if (id == null || friendId == null) {
-            throw new UserNotFoundException(Constants.USER_ID_IS_EMPTY);
+            throw new ValidationException(Constants.USER_ID_IS_EMPTY);
         }
         if (Integer.parseInt(id) <= 0 || Integer.parseInt(friendId) <= 0) {
             throw new UserNotFoundException(Constants.USER_ID_INCORRECT);

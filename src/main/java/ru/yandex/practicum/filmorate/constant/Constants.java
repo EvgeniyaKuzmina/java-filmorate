@@ -8,5 +8,6 @@ public class Constants {
     public static final String USER_ID_IS_EMPTY = "Не введён id пользователя";
     public static final String USER_ID_INCORRECT = "Введён неверный id пользователя";
     public static final String USER_NOT_EXIST= "Пользователя c id %d нет";
+    public static final String FILM_NOT_EXIST= "Фильма c id %d нет";
 
 }
