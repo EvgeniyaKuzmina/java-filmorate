@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.constant.Constants;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -92,13 +93,13 @@ public class FilmController {
             throw new ValidationException(Constants.FILM_ID_IS_EMPTY);
         }
         if (Integer.parseInt(id) <= 0) {
-            throw new ValidationException(Constants.FILM_ID_INCORRECT);
+            throw new FilmNotFoundException(Constants.FILM_ID_INCORRECT);
         }
         if (userId == null) {
             throw new ValidationException(Constants.USER_ID_IS_EMPTY);
         }
         if (Integer.parseInt(userId) <= 0) {
-            throw new ValidationException(Constants.USER_ID_INCORRECT);
+            throw new UserNotFoundException(Constants.USER_ID_INCORRECT);
         }
         return filmService.removeLike(Integer.parseInt(id), Integer.parseInt(userId));
     }
