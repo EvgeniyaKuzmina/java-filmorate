@@ -28,27 +28,27 @@ public class InMemoryUserStorage implements UserStorage {
             user.setName(user.getLogin());
         }
         ValidationUser.checkBirthDay(user); // проверка даты рождения пользователя
-        user.setUserId(Id.getId(users.keySet())); // сгенерировали id
+        user.setId(Id.getId(users.keySet())); // сгенерировали id
         log.info("Пользователь {} успешно добавлен", user.getLogin());
-        users.put(user.getUserId(), user);
+        users.put(user.getId(), user);
         return "Пользователь " + user.getName() + " успешно добавлен";
     }
 
     // метод для изменения данных пользователя
     public String updateUser(User user) throws ValidationException {
-        if (users.containsKey(user.getUserId())) {
-            User updUser = users.get(user.getUserId());
+        if (users.containsKey(user.getId())) {
+            User updUser = users.get(user.getId());
             ValidationUser.checkLogin(user); // проверка логина пользователя
             updUser.setName(user.getName()); // Обновили логина пользователя
             updUser.setEmail(user.getEmail()); // обновили email
             ValidationUser.checkBirthDay(user); // проверка даты рождения пользователя
             updUser.setBirthday(user.getBirthday()); // обновили дату рождения
-            users.put(updUser.getUserId(), updUser); // положили в таблицу обновлённые данные
+            users.put(updUser.getId(), updUser); // положили в таблицу обновлённые данные
             log.info("Данные пользователя {} успешно обновлены", user);
             return "Данные пользователя " + user.getName() + " успешно обновлены";
         } else {
             log.warn("Введён неверный id");
-            throw new UserNotFoundException("пользователя с ID " + user.getUserId() + " нет");
+            throw new UserNotFoundException("пользователя с ID " + user.getId() + " нет");
         }
 
     }

@@ -17,14 +17,14 @@ public class Film {
     private final Duration duration;
     @NotBlank
     @NotNull
-    private final String filmName;
-    private Integer filmId;
+    private final String name;
+    private Integer id;
     private LocalDate releaseDate;
     @Length(max = 200)
     private String description;
 
-    public Film(String filmName, String description, LocalDate releaseDate, Duration duration) {
-        this.filmName = filmName;
+    public Film(String name, String description, LocalDate releaseDate, Duration duration) {
+        this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;

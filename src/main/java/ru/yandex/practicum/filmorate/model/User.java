@@ -12,7 +12,7 @@ import java.util.*;
 public class User {
 
     private Map<Integer, String> friends; // хранит друзей в формате id — логин
-    private Integer userId;
+    private Integer id;
     @Email
     @NotNull
     @NotBlank
@@ -33,6 +33,6 @@ public class User {
     }
 
     public void addFriends(User friend) {
-        friends.put(friend.getUserId(), friend.getLogin());
+        friends.put(friend.getId(), friend.getLogin());
     }
 }

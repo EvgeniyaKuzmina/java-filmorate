@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -44,12 +43,15 @@ public class UserController {
         return inMemoryUserStorage.getAllUsers();
     }
 
+    // получение пользователя по id
+    //TODO написать метод возвращающий пользователя по Id
+
     // получаем список друзей общих с другим пользователем.
     @GetMapping(value = {"{id}/friends/common/{otherId}", "/friends/common/{otherId}", "{id}/friends/common/", "/friends/common/"})
     @ResponseBody
     public Map<Integer, String> getCommonFriends(@PathVariable(required = false) String id,
-                                       @PathVariable(required = false, value = "otherId") String otherUserId)
-                                        throws ValidationException {
+                                                 @PathVariable(required = false, value = "otherId") String otherUserId)
+            throws ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.USER_ID_IS_EMPTY);
         }
@@ -95,9 +97,10 @@ public class UserController {
     }
 
     //возвращаем список друзей пользователя
-    @PutMapping(value = {"{id}/friends/", "/friends/"})
+    @GetMapping(value = {"{id}/friends", "/friends"})
     @ResponseBody
-    public Map<Integer, String> getUserFriendById(@PathVariable(required = false) String id) throws ValidationException {
+    public Map<Integer, String> getUserFriendById(@PathVariable(required = false) String id) throws
+                                                                                             ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.USER_ID_IS_EMPTY);
         }

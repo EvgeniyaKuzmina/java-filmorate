@@ -34,11 +34,11 @@ public class FilmService {
             if (film.getLikes().contains(user)) { // проверяем ставил ли пользователь лайк фильму ранее
                 return String.format(
                         "Пользователь %s уже поставил like фильму %s. Нельзя поставить like более одного раза",
-                        user.getLogin(), film.getFilmName());
+                        user.getLogin(), film.getName());
             }
         }
         film.setLike(user);
-        return String.format("Пользователь %s поставил like фильму %s", user.getName(), film.getFilmName());
+        return String.format("Пользователь %s поставил like фильму %s", user.getName(), film.getName());
     }
 
     // удаление лайка
@@ -49,12 +49,12 @@ public class FilmService {
         Film film = inMemoryFilmStorage.getFilms().get(filmId);
         if (film.getLikes() != null) {
             if (!film.getLikes().contains(user)) { // проверяем ставил ли пользователь лайк фильму ранее
-                return String.format("Пользователь %s не ставил like фильму %s", user.getLogin(), film.getFilmName());
+                return String.format("Пользователь %s не ставил like фильму %s", user.getLogin(), film.getName());
             }
             film.getLikes().remove(user);
-            return String.format("Пользователь %s удалил like к фильму %s", user.getLogin(), film.getFilmName());
+            return String.format("Пользователь %s удалил like к фильму %s", user.getLogin(), film.getName());
         }
-        return String.format("У фильма %s нет лайков", film.getFilmName());
+        return String.format("У фильма %s нет лайков", film.getName());
     }
 
     // вывод наиболее популярных фильмов по количеству лайков.
@@ -64,17 +64,17 @@ public class FilmService {
                                                     .sorted(this::compare)
                                                     .collect(Collectors.toList());
         if (count > sortedFilms.size() && sortedFilms.size() < STANDARD_SIZE) {
-            sortedFilms.forEach(f -> likedFilmName.put("Фильм " + f.getFilmName(), "рейтинг " + f.getLikes().size()));
+            sortedFilms.forEach(f -> likedFilmName.put("Фильм " + f.getName(), "рейтинг " + f.getLikes().size()));
             return likedFilmName;
         } else if (count > sortedFilms.size()) {
             sortedFilms.stream()
                        .limit(STANDARD_SIZE)
-                       .forEach(f -> likedFilmName.put("Фильм " + f.getFilmName(), "рейтинг " + f.getLikes().size()));
+                       .forEach(f -> likedFilmName.put("Фильм " + f.getName(), "рейтинг " + f.getLikes().size()));
             return likedFilmName;
         } else {
             sortedFilms.stream()
                        .limit(count)
-                       .forEach(f -> likedFilmName.put("Фильм " + f.getFilmName(), "рейтинг " + f.getLikes().size()));
+                       .forEach(f -> likedFilmName.put("Фильм " + f.getName(), "рейтинг " + f.getLikes().size()));
             return likedFilmName;
         }
     }

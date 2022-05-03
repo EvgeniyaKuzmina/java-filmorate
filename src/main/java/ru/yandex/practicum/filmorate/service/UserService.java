@@ -49,9 +49,9 @@ public class UserService {
         if (user.getFriends().containsKey(friendId) && user.getFriends().containsKey(userId)) {
             user.getFriends().remove(friendId);
             friend.getFriends().remove(userId);
-            return String.format("Пользователь %s удалён из друзей", friend.getUserId());
+            return String.format("Пользователь %s удалён из друзей", friend.getId());
         }
-        return String.format("Пользователь c ID %d не является другом пользователя id %d", user.getUserId(), friend.getUserId());
+        return String.format("Пользователь c ID %d не является другом пользователя id %d", user.getId(), friend.getId());
 
     }
 

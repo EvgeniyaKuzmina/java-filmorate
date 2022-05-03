@@ -26,25 +26,25 @@ public class InMemoryFilmStorage implements FilmStorage {
     public String createFilm(Film film) throws ValidationException {
         ValidationFilm.checkDataOfRelease(film); // проверка даты релиза фильма
         ValidationFilm.checkDuration(film); // проверка продолжительности фильма
-        film.setFilmId(Id.getId(films.keySet())); // сгенерировали Id
+        film.setId(Id.getId(films.keySet())); // сгенерировали Id
         log.info("Фильм {} успешно добавлен", film);
-        films.put(film.getFilmId(), film);
-        return "Фильм " + film.getFilmName() + " успешно добавлен";
+        films.put(film.getId(), film);
+        return "Фильм " + film.getName() + " успешно добавлен";
     }
 
     // метод для изменения данных о фильме
     public String updateFilm(Film film) throws ValidationException {
-        if (films.containsKey(film.getFilmId())) {
-            Film upbFilm = films.get(film.getFilmId());
+        if (films.containsKey(film.getId())) {
+            Film upbFilm = films.get(film.getId());
             upbFilm.setDescription(film.getDescription()); // обновили описание фильма
             ValidationFilm.checkDataOfRelease(film); // проверка даты релиза фильма
             upbFilm.setReleaseDate(film.getReleaseDate()); // обновили дату релиза
-            films.put(film.getFilmId(), upbFilm); // положили обратно в мапу обновлённые данные
+            films.put(film.getId(), upbFilm); // положили обратно в мапу обновлённые данные
             log.info("Данные фильма {} успешно обновлены", film);
-            return "Данные фильма " + film.getFilmName() + " успешно обновлены";
+            return "Данные фильма " + film.getName() + " успешно обновлены";
         } else {
             log.warn("Введён неверный id");
-            throw new FilmNotFoundException("Фильма с ID " + film.getFilmId() + " нет");
+            throw new FilmNotFoundException("Фильма с ID " + film.getId() + " нет");
         }
     }
 
