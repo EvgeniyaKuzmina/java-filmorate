@@ -68,7 +68,7 @@ public class UserService {
                           .collect(Collectors.toList());
     }
 
-    // получение списка друзей пользователя
+    // получение списка друзей пользователя по id
     public List<String> getUserFriendById(Integer id) {
         validationUser.checkUserById(id);
         return new ArrayList<>(inMemoryUserStorage.getUsers().get(id).getFriends().values());
