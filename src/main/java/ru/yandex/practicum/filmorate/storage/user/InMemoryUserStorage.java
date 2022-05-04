@@ -23,16 +23,17 @@ public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users = new HashMap<>();
 
     // метод для создания пользователя
-    public String createUser(User user) throws ValidationException {
+    public User createUser(User user) throws ValidationException {
         ValidationUser.checkLogin(user); // проверка логина пользователя
         if (user.getName().isEmpty()) { // если имя пользователя пустое, используется логин пользователя
             user.setName(user.getLogin());
         }
         ValidationUser.checkBirthDay(user); // проверка даты рождения пользователя
-        user.setId(Id.getId(users.keySet())); // сгенерировали id
+        Integer id = Id.getId(users.keySet());
+        user.setId(id); // сгенерировали id
         log.info("Пользователь {} успешно добавлен", user.getLogin());
         users.put(user.getId(), user);
-        return "Пользователь " + user.getName() + " успешно добавлен";
+        return users.get(id);
     }
 
     // метод для изменения данных пользователя

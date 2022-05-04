@@ -28,7 +28,7 @@ public class UserController {
 
     // создание пользователя
     @PostMapping
-    public String createUser(@Valid @RequestBody User user) throws ValidationException {
+    public User createUser(@Valid @RequestBody User user) throws ValidationException {
         return inMemoryUserStorage.createUser(user);
     }
 

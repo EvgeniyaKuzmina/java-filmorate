@@ -9,7 +9,7 @@ import java.util.Map;
 public interface UserStorage {
 
     // метод для создания пользователя
-    String createUser(User user) throws ValidationException;
+    User createUser(User user) throws ValidationException;
 
     // метод для изменения данных пользователя
     String updateUser(User user) throws ValidationException;

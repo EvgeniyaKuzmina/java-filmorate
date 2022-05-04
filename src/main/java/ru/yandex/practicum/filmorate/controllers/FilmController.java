@@ -14,7 +14,6 @@ import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,10 +48,8 @@ public class FilmController {
         return inMemoryFilmStorage.getAllFilms();
     }
 
-    // TODO метод получить фильма по Id
-
     //получение фильма по id
-    @GetMapping(value  = "{id}")
+    @GetMapping(value = "{id}")
     @ResponseBody
     public Film getFilmById(@Valid @PathVariable(required = false) String id) throws ValidationException {
         if (id == null) {
@@ -65,10 +62,10 @@ public class FilmController {
     }
 
     // Добавление в друзья пользователя по Id
-    @PutMapping(value  = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
+    @PutMapping(value = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
     @ResponseBody
     public String addLikeToFilm(@Valid @PathVariable(required = false) String id,
-                                     @PathVariable(required = false) String userId) throws ValidationException {
+                                @PathVariable(required = false) String userId) throws ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.FILM_ID_IS_EMPTY);
         }
@@ -85,10 +82,10 @@ public class FilmController {
     }
 
     //удаление пользователя из друзей по id
-    @DeleteMapping(value  = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
+    @DeleteMapping(value = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
     @ResponseBody
     public String removeLikeFromFilm(@Valid @PathVariable(required = false) String id,
-                                         @PathVariable(required = false) String userId) throws ValidationException {
+                                     @PathVariable(required = false) String userId) throws ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.FILM_ID_IS_EMPTY);
         }
@@ -108,7 +105,7 @@ public class FilmController {
     @GetMapping("/popular")
     @ResponseBody
     public HashMap<String, String> mostPopularFilm(@Valid @RequestParam(defaultValue = "10", required = false) Integer count) throws
-                                                                                                                 ValidationException {
+                                                                                                                              ValidationException {
         if (count == 0 || count < 1) {
             throw new ValidationException("Ошибка ввода поля count");
         }
