@@ -13,11 +13,11 @@ import java.util.Set;
 @Data
 public class Film {
 
-    private Set<User> likes; // хранит пользователей, кто поставил лайк фильму
     private final Duration duration;
     @NotBlank
     @NotNull
     private final String name;
+    private Set<User> likes; // хранит пользователей, кто поставил лайк фильму
     private Integer id;
     private LocalDate releaseDate;
     @Length(max = 200)

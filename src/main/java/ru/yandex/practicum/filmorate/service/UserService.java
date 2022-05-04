@@ -8,9 +8,8 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.validation.ValidationUser;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,32 +50,29 @@ public class UserService {
             friend.getFriends().remove(userId);
             return String.format("Пользователь %s удалён из друзей", friend.getId());
         }
-        return String.format("Пользователь c ID %d не является другом пользователя id %d", user.getId(), friend.getId());
+        return String.format("Пользователь c ID %d не является другом пользователя id %d", user.getId(),
+                             friend.getId());
 
     }
 
     // вывод списка общих друзей
-    public Map<Integer, String> getCommonFriends(Integer userId, Integer otherUserId) throws UserNotFoundException {
+    public List<String> getCommonFriends(Integer userId, Integer otherUserId) throws UserNotFoundException {
         validationUser.checkUserById(userId);
         validationUser.checkUserById(otherUserId);
-        Map<Integer, String> commonFriends = new HashMap<>();
-        Map<Integer, String> userFriends = inMemoryUserStorage.getUsers().get(userId).getFriends();
-        Map<Integer, String> otherUserFriends = inMemoryUserStorage.getUsers().get(otherUserId).getFriends();
-        List<Integer> commonListFriends = userFriends.keySet().stream()
-                                                     .filter(otherUserFriends::containsKey)
-                                                     .collect(Collectors.toList());
-        commonListFriends.forEach(u -> commonFriends.put(u, inMemoryUserStorage.getUsers().get(u).getLogin()));
-        return commonFriends;
-
+        List<String> userFriends = new ArrayList<>(inMemoryUserStorage.getUsers().get(userId)
+                                                                      .getFriends().values());
+        List<String> otherUserFriends = new ArrayList<>(inMemoryUserStorage.getUsers().get(otherUserId)
+                                                                           .getFriends().values());
+        return userFriends.stream()
+                          .filter(otherUserFriends::contains)
+                          .collect(Collectors.toList());
     }
 
     // получение списка друзей пользователя
-    public Map<Integer, String> getUserFriendById(Integer id) {
+    public List<String> getUserFriendById(Integer id) {
         validationUser.checkUserById(id);
-        return inMemoryUserStorage.getUsers().get(id).getFriends();
+        return new ArrayList<>(inMemoryUserStorage.getUsers().get(id).getFriends().values());
     }
-
-
 
 
 }

@@ -22,7 +22,6 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     private final Map<Integer, Film> films = new HashMap<>();
 
-
     // метод для добавления фильма
     public String createFilm(Film film) throws ValidationException {
         ValidationFilm.checkDataOfRelease(film); // проверка даты релиза фильма

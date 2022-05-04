@@ -51,7 +51,7 @@ public class FilmController {
     //получение фильма по id
     @GetMapping(value = "{id}")
     @ResponseBody
-    public Film getFilmById(@Valid @PathVariable(required = false) String id) throws ValidationException {
+    public Film getFilmById(@PathVariable(required = false) String id) throws ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.FILM_ID_IS_EMPTY);
         }
@@ -64,7 +64,7 @@ public class FilmController {
     // Добавление в друзья пользователя по Id
     @PutMapping(value = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
     @ResponseBody
-    public String addLikeToFilm(@Valid @PathVariable(required = false) String id,
+    public String addLikeToFilm(@PathVariable(required = false) String id,
                                 @PathVariable(required = false) String userId) throws ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.FILM_ID_IS_EMPTY);
@@ -84,7 +84,7 @@ public class FilmController {
     //удаление пользователя из друзей по id
     @DeleteMapping(value = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
     @ResponseBody
-    public String removeLikeFromFilm(@Valid @PathVariable(required = false) String id,
+    public String removeLikeFromFilm(@PathVariable(required = false) String id,
                                      @PathVariable(required = false) String userId) throws ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.FILM_ID_IS_EMPTY);
@@ -104,8 +104,8 @@ public class FilmController {
     // получение списка самых популярных фильмов
     @GetMapping("/popular")
     @ResponseBody
-    public HashMap<String, String> mostPopularFilm(@Valid @RequestParam(defaultValue = "10", required = false) Integer count) throws
-                                                                                                                              ValidationException {
+    public HashMap<String, String> mostPopularFilm(@RequestParam(defaultValue = "10", required = false) Integer count) throws
+                                                                                                                       ValidationException {
         if (count == 0 || count < 1) {
             throw new ValidationException("Ошибка ввода поля count");
         }

@@ -11,7 +11,9 @@ import ru.yandex.practicum.filmorate.model.Id;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validation.ValidationUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -29,8 +31,8 @@ public class InMemoryUserStorage implements UserStorage {
             user.setName(user.getLogin());
         }
         ValidationUser.checkBirthDay(user); // проверка даты рождения пользователя
-        Integer id = Id.getId(users.keySet());
-        user.setId(id); // сгенерировали id
+        Integer id = Id.getId(users.keySet()); // сгенерировали id
+        user.setId(id);
         log.info("Пользователь {} успешно добавлен", user.getLogin());
         users.put(user.getId(), user);
         return users.get(id);
@@ -52,17 +54,16 @@ public class InMemoryUserStorage implements UserStorage {
             log.warn("Введён неверный id");
             throw new UserNotFoundException("пользователя с ID " + user.getId() + " нет");
         }
-
     }
 
     // метод для получения списка всех пользователей
-    public Map<Integer, User> getAllUsers() {
-        return users;
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
     }
 
     // метод для получения пользователя по id
     public User getUsersById(Integer id) {
-        if (!users.containsKey(id)){
+        if (!users.containsKey(id)) {
             throw new UserNotFoundException(String.format(Constants.USER_NOT_EXIST, id));
         }
         return users.get(id);

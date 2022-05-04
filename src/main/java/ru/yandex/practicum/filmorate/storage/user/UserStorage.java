@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.storage.user;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.Map;
+import java.util.List;
 
 //методы добавления, удаления и модификации объектов.
 public interface UserStorage {
@@ -15,7 +15,7 @@ public interface UserStorage {
     String updateUser(User user) throws ValidationException;
 
     // метод для получения списка всех пользователей
-    Map<Integer, User> getAllUsers();
+    List<User> getAllUsers();
 
     // метод удаления пользователя
     String removeUser(User user);
