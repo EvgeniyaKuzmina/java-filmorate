@@ -69,9 +69,15 @@ public class UserService {
     }
 
     // получение списка друзей пользователя по id
-    public List<String> getUserFriendById(Integer id) {
+    public List<User> getUserFriendById(Integer id) {
         validationUser.checkUserById(id);
-        return new ArrayList<>(inMemoryUserStorage.getUsers().get(id).getFriends().values());
+        List<Integer> userFriendsId = new ArrayList<>(inMemoryUserStorage.getUsers().get(id).getFriends().keySet());
+        List<User> userFriends = new ArrayList<>();
+        for (int idUser : userFriendsId){
+            userFriends.add(inMemoryUserStorage.getUsers().get(idUser));
+        }
+
+        return userFriends;
     }
 
 

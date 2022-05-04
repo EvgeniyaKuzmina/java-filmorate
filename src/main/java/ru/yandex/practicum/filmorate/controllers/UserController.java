@@ -111,7 +111,7 @@ public class UserController {
     //возвращаем список друзей пользователя
     @GetMapping(value = {"{id}/friends", "/friends"})
     @ResponseBody
-    public List<String> getUserFriendById(@PathVariable(required = false) String id) throws
+    public List<User> getUserFriendById(@PathVariable(required = false) String id) throws
                                                                                      ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.USER_ID_IS_EMPTY);
