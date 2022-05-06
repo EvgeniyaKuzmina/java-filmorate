@@ -76,7 +76,7 @@ public class FilmService {
     }
 
     private int compare(Film f1, Film f2) {
-        return  (f1.getLikes().size() - f2.getLikes().size()); //прямой порядок сортировки
+        return  (f2.getLikes().size() - f1.getLikes().size()); //прямой порядок сортировки
     }
 
 
