@@ -59,7 +59,6 @@ public class FilmService {
     // вывод наиболее популярных фильмов по количеству лайков.
     public List<Film> mostPopularFilm(Integer count) {
         List<Film> sortedFilms = inMemoryFilmStorage.getFilms().values().stream()
-                                                    .filter(f -> !f.getLikes().isEmpty())
                                                     .sorted(this::compare)
                                                     .collect(Collectors.toList());
         if (count > sortedFilms.size() && sortedFilms.size() < STANDARD_SIZE) {
