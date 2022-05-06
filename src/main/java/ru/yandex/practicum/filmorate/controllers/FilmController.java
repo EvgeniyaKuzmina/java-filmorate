@@ -10,42 +10,42 @@ import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @Slf4j
 @Component
 @RequestMapping("/films")
 public class FilmController {
-    private InMemoryFilmStorage inMemoryFilmStorage;
-    private FilmService filmService;
+    private final FilmStorage filmStorage;
+    private final FilmService filmService;
 
     @Autowired
     public FilmController(InMemoryFilmStorage inMemoryFilmStorage, FilmService filmService) {
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
+        this.filmStorage = inMemoryFilmStorage;
         this.filmService = filmService;
     }
 
     // добавление нового фильма
     @PostMapping
-    public String createFilm(@Valid @RequestBody Film film) throws ValidationException {
-        return inMemoryFilmStorage.createFilm(film);
+    public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
+        return filmStorage.createFilm(film);
     }
 
     //обновление существующего фильма
     @PutMapping
-    public String updateFilm(@Valid @RequestBody Film film) throws ValidationException {
-        return inMemoryFilmStorage.updateFilm(film);
+    public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
+        return filmStorage.updateFilm(film);
     }
 
     // получение всех фильмов
     @GetMapping
-    public Map<Integer, Film> getAllFilms() {
-        return inMemoryFilmStorage.getAllFilms();
+    public List<Film> getAllFilms() {
+        return filmStorage.getAllFilms();
     }
 
     //получение фильма по id
@@ -58,7 +58,7 @@ public class FilmController {
         if (Integer.parseInt(id) <= 0) {
             throw new FilmNotFoundException(Constants.FILM_ID_INCORRECT);
         }
-        return inMemoryFilmStorage.getFilmById(Integer.parseInt(id));
+        return filmStorage.getFilmById(Integer.parseInt(id));
     }
 
     // Добавление в друзья пользователя по Id
@@ -104,8 +104,8 @@ public class FilmController {
     // получение списка самых популярных фильмов
     @GetMapping("/popular")
     @ResponseBody
-    public HashMap<String, String> mostPopularFilm(@RequestParam(defaultValue = "10", required = false) Integer count) throws
-                                                                                                                       ValidationException {
+    public List<Film> mostPopularFilm(@RequestParam(defaultValue = "10", required = false) Integer count) throws
+                                                                                                          ValidationException {
         if (count == 0 || count < 1) {
             throw new ValidationException("Ошибка ввода поля count");
         }

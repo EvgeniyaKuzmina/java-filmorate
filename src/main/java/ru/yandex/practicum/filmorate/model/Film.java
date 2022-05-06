@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import ru.yandex.practicum.filmorate.util.DurationSerialize;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,11 +15,13 @@ import java.util.Set;
 @Data
 public class Film {
 
-    private final Duration duration;
+
+    @JsonSerialize(using = DurationSerialize.class)
+    private Duration duration;
     @NotBlank
     @NotNull
-    private final String name;
-    private Set<User> likes; // хранит пользователей, кто поставил лайк фильму
+    private String name;
+    private Set<Integer> likes; // хранит id пользователей, кто поставил лайк фильму
     private Integer id;
     private LocalDate releaseDate;
     @Length(max = 200)
@@ -34,6 +38,6 @@ public class Film {
     }
 
     public void setLike(User user) {
-        likes.add(user);
+        likes.add(user.getId());
     }
 }

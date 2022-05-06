@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.validation.ValidationFilm;
 import ru.yandex.practicum.filmorate.validation.ValidationUser;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,29 +57,27 @@ public class FilmService {
     }
 
     // вывод наиболее популярных фильмов по количеству лайков.
-    public HashMap<String, String> mostPopularFilm(Integer count) {
-        HashMap<String, String> likedFilmName = new HashMap<>();
+    public List<Film> mostPopularFilm(Integer count) {
         List<Film> sortedFilms = inMemoryFilmStorage.getFilms().values().stream()
+                                                    .filter(f -> !f.getLikes().isEmpty())
                                                     .sorted(this::compare)
                                                     .collect(Collectors.toList());
         if (count > sortedFilms.size() && sortedFilms.size() < STANDARD_SIZE) {
-            sortedFilms.forEach(f -> likedFilmName.put("Фильм " + f.getName(), "рейтинг " + f.getLikes().size()));
-            return likedFilmName;
+            return sortedFilms;
         } else if (count > sortedFilms.size()) {
-            sortedFilms.stream()
-                       .limit(STANDARD_SIZE)
-                       .forEach(f -> likedFilmName.put("Фильм " + f.getName(), "рейтинг " + f.getLikes().size()));
-            return likedFilmName;
+            return sortedFilms.stream()
+                              .limit(STANDARD_SIZE).collect(Collectors.toList());
+
         } else {
-            sortedFilms.stream()
-                       .limit(count)
-                       .forEach(f -> likedFilmName.put("Фильм " + f.getName(), "рейтинг " + f.getLikes().size()));
-            return likedFilmName;
+            return sortedFilms.stream()
+                              .limit(count)
+                              .collect(Collectors.toList());
+
         }
     }
 
     private int compare(Film f1, Film f2) {
-        return f1.getLikes().size() - (f2.getLikes().size()); //прямой порядок сортировки
+        return  (f1.getLikes().size() - f2.getLikes().size()); //прямой порядок сортировки
     }
 
 

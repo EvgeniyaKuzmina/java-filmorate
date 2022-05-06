@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,31 +18,31 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/users")
 public class UserController {
-    private InMemoryUserStorage inMemoryUserStorage;
-    private UserService userService;
+    private final UserStorage userStorage;
+    private final UserService userService;
 
     @Autowired
     public UserController(InMemoryUserStorage inMemoryUserStorage, UserService userService) {
-        this.inMemoryUserStorage = inMemoryUserStorage;
+        this.userStorage = inMemoryUserStorage;
         this.userService = userService;
     }
 
     // создание пользователя
     @PostMapping
     public User createUser(@Valid @RequestBody User user) throws ValidationException {
-        return inMemoryUserStorage.createUser(user);
+        return userStorage.createUser(user);
     }
 
     // обновление пользователя
     @PutMapping
     public String updateUser(@Valid @RequestBody User user) throws ValidationException {
-        return inMemoryUserStorage.updateUser(user);
+        return userStorage.updateUser(user);
     }
 
     // получение всех пользователей
     @GetMapping
     public List<User> getAllUsers() {
-        return inMemoryUserStorage.getAllUsers();
+        return userStorage.getAllUsers();
     }
 
     // получение пользователя по id
@@ -55,14 +56,14 @@ public class UserController {
         if (Integer.parseInt(id) <= 0) {
             throw new UserNotFoundException(Constants.USER_ID_INCORRECT);
         }
-        return inMemoryUserStorage.getUsersById(Integer.parseInt(id));
+        return userStorage.getUsersById(Integer.parseInt(id));
     }
 
     // получаем список друзей общих с другим пользователем.
     @GetMapping(value = {"{id}/friends/common/{otherId}", "/friends/common/{otherId}", "{id}/friends/common/", "/friends/common/"})
     @ResponseBody
-    public List<String> getCommonFriends(@PathVariable(required = false) String id,
-                                         @PathVariable(required = false, value = "otherId") String otherUserId)
+    public List<User> getCommonFriends(@PathVariable(required = false) String id,
+                                       @PathVariable(required = false, value = "otherId") String otherUserId)
             throws ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.USER_ID_IS_EMPTY);
@@ -112,7 +113,7 @@ public class UserController {
     @GetMapping(value = {"{id}/friends", "/friends"})
     @ResponseBody
     public List<User> getUserFriendById(@PathVariable(required = false) String id) throws
-                                                                                     ValidationException {
+                                                                                   ValidationException {
         if (id == null) {
             throw new ValidationException(Constants.USER_ID_IS_EMPTY);
         }

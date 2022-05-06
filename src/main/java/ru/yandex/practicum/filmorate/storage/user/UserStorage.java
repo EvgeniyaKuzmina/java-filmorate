@@ -19,4 +19,7 @@ public interface UserStorage {
 
     // метод удаления пользователя
     String removeUser(User user);
+
+    // получение пользователя по id
+    User getUsersById(Integer id);
 }

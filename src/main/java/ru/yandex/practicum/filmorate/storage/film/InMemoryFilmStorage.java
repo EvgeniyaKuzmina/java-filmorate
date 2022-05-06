@@ -11,7 +11,9 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Id;
 import ru.yandex.practicum.filmorate.validation.ValidationFilm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -23,25 +25,29 @@ public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
 
     // метод для добавления фильма
-    public String createFilm(Film film) throws ValidationException {
+    public Film createFilm(Film film) throws ValidationException {
         ValidationFilm.checkDataOfRelease(film); // проверка даты релиза фильма
         ValidationFilm.checkDuration(film); // проверка продолжительности фильма
         film.setId(Id.getId(films.keySet())); // сгенерировали Id
         log.info("Фильм {} успешно добавлен", film);
-        films.put(film.getId(), film);
-        return "Фильм " + film.getName() + " успешно добавлен";
+        int id = film.getId();
+        films.put(id, film);
+        return films.get(id);
     }
 
     // метод для изменения данных о фильме
-    public String updateFilm(Film film) throws ValidationException {
+    public Film updateFilm(Film film) throws ValidationException {
         if (films.containsKey(film.getId())) {
             Film upbFilm = films.get(film.getId());
+            upbFilm.setName(film.getName()); // обновили название фильма
+            ValidationFilm.checkDuration(film); // проверка продолжительности фильма
+            upbFilm.setDuration(film.getDuration()); // обновили продолжительность фильма
             upbFilm.setDescription(film.getDescription()); // обновили описание фильма
             ValidationFilm.checkDataOfRelease(film); // проверка даты релиза фильма
             upbFilm.setReleaseDate(film.getReleaseDate()); // обновили дату релиза
             films.put(film.getId(), upbFilm); // положили обратно в мапу обновлённые данные
             log.info("Данные фильма {} успешно обновлены", film);
-            return "Данные фильма " + film.getName() + " успешно обновлены";
+            return upbFilm;
         } else {
             log.warn("Введён неверный id");
             throw new FilmNotFoundException("Фильма с ID " + film.getId() + " нет");
@@ -49,8 +55,8 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     // метод для получения списка всех фильмов
-    public Map<Integer, Film> getAllFilms() {
-        return films;
+    public List<Film> getAllFilms() {
+        return new ArrayList<>(films.values());
     }
 
     // получение фильма по id
