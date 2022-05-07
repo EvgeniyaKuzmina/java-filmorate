@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Set;
 
-
 public class Id {
 
     private static final int ONE = 1;

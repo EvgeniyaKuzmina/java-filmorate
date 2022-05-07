@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import java.time.LocalDate;
 
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class ValidationFilm {
 
     private static final LocalDate EARLIEST_DATA_OF_RELEASE = LocalDate.of(1895, 12, 28);
-    private final InMemoryFilmStorage inMemoryFilmStorage;
+    private final FilmStorage filmStorage;
 
     // проверка даты релиза
     public static void checkDataOfRelease(Film film) throws ValidationException {
@@ -36,7 +36,7 @@ public class ValidationFilm {
     }
 
     public void checkFilmById(Integer id) {
-        if (!inMemoryFilmStorage.getFilms().containsKey(id)) {
+        if (!filmStorage.getFilms().containsKey(id)) {
             throw new FilmNotFoundException(String.format("Фильма c id %d нет", id));
         }
     }

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.validation.ValidationFilm;
 import ru.yandex.practicum.filmorate.validation.ValidationUser;
 
@@ -18,8 +18,8 @@ import static ru.yandex.practicum.filmorate.constant.Constants.STANDARD_SIZE;
 @RequiredArgsConstructor
 public class FilmService {
 
-    private final InMemoryFilmStorage inMemoryFilmStorage;
-    private final InMemoryUserStorage inMemoryUserStorage;
+    private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
     private final ValidationFilm validationFilm;
     private final ValidationUser validationUser;
 
@@ -27,8 +27,8 @@ public class FilmService {
     public String addLike(Integer filmId, Integer userId) {
         validationFilm.checkFilmById(filmId);
         validationUser.checkUserById(userId);
-        User user = inMemoryUserStorage.getUsers().get(userId);
-        Film film = inMemoryFilmStorage.getFilms().get(filmId);
+        User user = userStorage.getUsers().get(userId);
+        Film film = filmStorage.getFilms().get(filmId);
         if (film.getLikes() != null) {
             if (film.getLikes().contains(user)) { // проверяем ставил ли пользователь лайк фильму ранее
                 return String.format(
@@ -44,8 +44,8 @@ public class FilmService {
     public String removeLike(Integer filmId, Integer userId) {
         validationFilm.checkFilmById(filmId);
         validationUser.checkUserById(userId);
-        User user = inMemoryUserStorage.getUsers().get(userId);
-        Film film = inMemoryFilmStorage.getFilms().get(filmId);
+        User user = userStorage.getUsers().get(userId);
+        Film film = filmStorage.getFilms().get(filmId);
         if (film.getLikes() != null) {
             if (!film.getLikes().contains(user)) { // проверяем ставил ли пользователь лайк фильму ранее
                 return String.format("Пользователь %s не ставил like фильму %s", user.getLogin(), film.getName());
@@ -58,9 +58,9 @@ public class FilmService {
 
     // вывод наиболее популярных фильмов по количеству лайков.
     public List<Film> mostPopularFilm(Integer count) {
-        List<Film> sortedFilms = inMemoryFilmStorage.getFilms().values().stream()
-                                                    .sorted(this::compare)
-                                                    .collect(Collectors.toList());
+        List<Film> sortedFilms = filmStorage.getFilms().values().stream()
+                                            .sorted(this::compare)
+                                            .collect(Collectors.toList());
         if (count > sortedFilms.size() && sortedFilms.size() < STANDARD_SIZE) {
             return sortedFilms;
         } else if (count > sortedFilms.size()) {

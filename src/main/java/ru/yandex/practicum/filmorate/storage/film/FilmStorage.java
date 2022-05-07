@@ -4,6 +4,7 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FilmStorage {
 
@@ -21,4 +22,6 @@ public interface FilmStorage {
 
     // получение фильма по id
     Film getFilmById(Integer id);
+
+    Map<Integer, Film> getFilms();
 }

@@ -25,8 +25,8 @@ public class FilmController {
     private final FilmService filmService;
 
     @Autowired
-    public FilmController(InMemoryFilmStorage inMemoryFilmStorage, FilmService filmService) {
-        this.filmStorage = inMemoryFilmStorage;
+    public FilmController(FilmStorage filmStorage, FilmService filmService) {
+        this.filmStorage = filmStorage;
         this.filmService = filmService;
     }
 
@@ -61,7 +61,7 @@ public class FilmController {
         return filmStorage.getFilmById(Integer.parseInt(id));
     }
 
-    // Добавление в друзья пользователя по Id
+    // Добавление лайка к фильму
     @PutMapping(value = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
     @ResponseBody
     public String addLikeToFilm(@PathVariable(required = false) String id,
@@ -81,7 +81,7 @@ public class FilmController {
         return filmService.addLike(Integer.parseInt(id), Integer.parseInt(userId));
     }
 
-    //удаление пользователя из друзей по id
+    //удаление лайка из фильма
     @DeleteMapping(value = {"/{id}/like/{userId}", "/{id}/like/", "/like/{userId}", "/like/"})
     @ResponseBody
     public String removeLikeFromFilm(@PathVariable(required = false) String id,

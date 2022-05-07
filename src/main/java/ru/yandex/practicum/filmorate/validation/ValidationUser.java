@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.constant.Constants;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class ValidationUser {
 
-    private final InMemoryUserStorage inMemoryUserStorage;
+    private final UserStorage userStorage;
 
     // проверка даты рождения пользователя
     public static void checkBirthDay(User user) throws ValidationException {
@@ -35,7 +35,7 @@ public class ValidationUser {
     }
 
     public void checkUserById(Integer id) {
-        if (!inMemoryUserStorage.getUsers().containsKey(id)) {
+        if (!userStorage.getUsers().containsKey(id)) {
             throw new UserNotFoundException(String.format(Constants.USER_NOT_EXIST, id));
         }
     }
