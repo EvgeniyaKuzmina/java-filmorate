@@ -6,11 +6,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class User {
 
-    private Integer userId;
+    private Set<Integer> friends; // хранит друзей в формате id
+    private Integer id;
     @Email
     @NotNull
     @NotBlank
@@ -27,5 +30,10 @@ public class User {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
+        this.friends = new HashSet<>();
+    }
+
+    public void addFriends(User friend) {
+        friends.add(friend.getId());
     }
 }
