@@ -43,7 +43,8 @@ public class InMemoryUserStorage implements UserStorage {
         if (users.containsKey(user.getId())) {
             User updUser = users.get(user.getId());
             ValidationUser.checkLogin(user); // проверка логина пользователя
-            updUser.setName(user.getName()); // Обновили логина пользователя
+            updUser.setLogin(user.getLogin()); // Обновили логин пользователя
+            updUser.setName(user.getName()); // Обновили имя пользователя
             updUser.setEmail(user.getEmail()); // обновили email
             ValidationUser.checkBirthDay(user); // проверка даты рождения пользователя
             updUser.setBirthday(user.getBirthday()); // обновили дату рождения
