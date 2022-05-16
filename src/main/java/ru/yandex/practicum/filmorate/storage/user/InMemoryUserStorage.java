@@ -39,17 +39,18 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     // метод для изменения данных пользователя
-    public String updateUser(User user) throws ValidationException {
+    public User updateUser(User user) throws ValidationException {
         if (users.containsKey(user.getId())) {
             User updUser = users.get(user.getId());
             ValidationUser.checkLogin(user); // проверка логина пользователя
-            updUser.setName(user.getName()); // Обновили логина пользователя
+            updUser.setLogin(user.getLogin()); // Обновили логин пользователя
+            updUser.setName(user.getName()); // Обновили имя пользователя
             updUser.setEmail(user.getEmail()); // обновили email
             ValidationUser.checkBirthDay(user); // проверка даты рождения пользователя
             updUser.setBirthday(user.getBirthday()); // обновили дату рождения
             users.put(updUser.getId(), updUser); // положили в таблицу обновлённые данные
             log.info("Данные пользователя {} успешно обновлены", user);
-            return "Данные пользователя " + user.getName() + " успешно обновлены";
+            return updUser;
         } else {
             log.warn("Введён неверный id");
             throw new UserNotFoundException("пользователя с ID " + user.getId() + " нет");

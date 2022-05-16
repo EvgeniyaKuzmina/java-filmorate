@@ -13,7 +13,7 @@ public interface UserStorage {
     User createUser(User user) throws ValidationException;
 
     // метод для изменения данных пользователя
-    String updateUser(User user) throws ValidationException;
+    User updateUser(User user) throws ValidationException;
 
     // метод для получения списка всех пользователей
     List<User> getAllUsers();

@@ -24,6 +24,11 @@ public class User {
     @NotNull
     private String name;
     private LocalDate birthday;
+    private Boolean status; /* статус дружбы:
+                            false неподтверждённая — когда один пользователь отправил запрос
+                            на добавление другого пользователя в друзья,
+                            true подтверждённая — когда второй пользователь согласился на добавление.
+                              */
 
     public User(String email, String login, String name, LocalDate birthday) {
         this.email = email;

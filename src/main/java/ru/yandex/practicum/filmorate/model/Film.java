@@ -28,6 +28,8 @@ public class Film {
     @NotBlank
     @NotNull
     private String description;
+    private Genre genre;
+    private RatingМРАА rating;
 
     public Film(String name, String description, LocalDate releaseDate, Duration duration) {
         this.name = name;

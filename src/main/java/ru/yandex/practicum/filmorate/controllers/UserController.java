@@ -34,7 +34,7 @@ public class UserController {
 
     // обновление пользователя
     @PutMapping
-    public String updateUser(@Valid @RequestBody User user) throws ValidationException {
+    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
         return userStorage.updateUser(user);
     }
 
