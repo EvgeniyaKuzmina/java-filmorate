@@ -22,7 +22,7 @@ import java.util.Map;
 @Setter
 public class InMemoryFilmStorage implements FilmStorage {
 
-    private final Map<Integer, Film> films = new HashMap<>();
+    private final Map<Long, Film> films = new HashMap<>();
 
     // метод для добавления фильма
     public Film createFilm(Film film) throws ValidationException {
@@ -30,7 +30,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         ValidationFilm.checkDuration(film); // проверка продолжительности фильма
         film.setId(Id.getId(films.keySet())); // сгенерировали Id
         log.info("Фильм {} успешно добавлен", film);
-        int id = film.getId();
+        Long id = film.getId();
         films.put(id, film);
         return films.get(id);
     }

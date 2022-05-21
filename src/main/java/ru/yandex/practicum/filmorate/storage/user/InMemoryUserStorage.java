@@ -22,7 +22,7 @@ import java.util.Map;
 @Setter
 public class InMemoryUserStorage implements UserStorage {
 
-    private final Map<Integer, User> users = new HashMap<>();
+    private final Map<Long, User> users = new HashMap<>();
 
     // метод для создания пользователя
     public User createUser(User user) throws ValidationException {
@@ -31,7 +31,7 @@ public class InMemoryUserStorage implements UserStorage {
             user.setName(user.getLogin());
         }
         ValidationUser.checkBirthDay(user); // проверка даты рождения пользователя
-        Integer id = Id.getId(users.keySet()); // сгенерировали id
+        Long id = Id.getId(users.keySet()); // сгенерировали id
         user.setId(id);
         log.info("Пользователь {} успешно добавлен", user.getLogin());
         users.put(user.getId(), user);

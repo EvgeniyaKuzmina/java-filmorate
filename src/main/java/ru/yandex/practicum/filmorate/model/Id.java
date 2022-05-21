@@ -6,13 +6,13 @@ import java.util.Set;
 
 public class Id {
 
-    private static final int ONE = 1;
+    private static final Long ONE = 1L;
 
     private Id() {
     }
 
     //генерирует новый id на основании последнего созданного Id
-    public static int getId(Set<Integer> id) {
+    public static Long getId(Set<Long> id) {
         Comparator<Integer> comparator = Comparator.comparingInt(id2 -> id2);
         LinkedList<Integer> allId = new LinkedList<>(id);
         allId.sort(comparator);
