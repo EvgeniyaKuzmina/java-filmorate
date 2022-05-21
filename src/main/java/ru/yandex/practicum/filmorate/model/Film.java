@@ -21,8 +21,8 @@ public class Film {
     @NotBlank
     @NotNull
     private String name;
-    private Set<Integer> likes; // хранит id пользователей, кто поставил лайк фильму
-    private Integer id;
+    private Set<Long> likes; // хранит id пользователей, кто поставил лайк фильму
+    private Long id;
     private LocalDate releaseDate;
     @Length(max = 200)
     @NotBlank

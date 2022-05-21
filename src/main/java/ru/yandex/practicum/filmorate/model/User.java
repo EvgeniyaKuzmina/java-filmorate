@@ -12,8 +12,8 @@ import java.util.Set;
 @Data
 public class User {
 
-    private Set<Integer> friends; // хранит друзей в формате id
-    private Integer id;
+    private Set<Long> friends; // хранит друзей в формате id
+    private Long id;
     @Email
     @NotNull
     @NotBlank

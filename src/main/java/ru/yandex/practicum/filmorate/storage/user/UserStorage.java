@@ -22,7 +22,7 @@ public interface UserStorage {
     String removeUser(User user);
 
     // получение пользователя по id
-    User getUsersById(Integer id);
+    User getUsersById(Long id);
 
-    Map<Integer, User> getUsers();
+    Map<Long, User> getUsers();
 }
