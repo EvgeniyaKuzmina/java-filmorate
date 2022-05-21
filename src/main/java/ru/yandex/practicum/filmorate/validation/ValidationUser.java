@@ -34,7 +34,7 @@ public class ValidationUser {
         }
     }
 
-    public void checkUserById(Integer id) {
+    public void checkUserById(Long id) {
         if (!userStorage.getUsers().containsKey(id)) {
             throw new UserNotFoundException(String.format(Constants.USER_NOT_EXIST, id));
         }

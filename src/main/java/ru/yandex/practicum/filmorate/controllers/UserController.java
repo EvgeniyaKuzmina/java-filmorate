@@ -76,7 +76,7 @@ public class UserController {
         if (Integer.parseInt(otherUserId) <= 0) {
             throw new ValidationException(Constants.USER_ID_INCORRECT);
         }
-        return userService.getCommonFriends(Integer.parseInt(id), Integer.parseInt(otherUserId));
+        return userService.getCommonFriends(Long.parseLong(id), Long.parseLong(otherUserId));
     }
 
     // удаление из друзей
@@ -91,7 +91,7 @@ public class UserController {
             throw new ValidationException(Constants.USER_ID_INCORRECT);
         }
 
-        return userService.removeFriend(Integer.parseInt(id), Integer.parseInt(friendId));
+        return userService.removeFriend(Long.parseLong(id), Long.parseLong(friendId));
     }
 
     // добавление в друзья
@@ -119,7 +119,7 @@ public class UserController {
         if (Integer.parseInt(id) <= 0) {
             throw new ValidationException(Constants.USER_ID_INCORRECT);
         }
-        return userService.getUserFriendById(Integer.parseInt(id));
+        return userService.getUserFriendById(Long.parseLong(id));
     }
 
 }

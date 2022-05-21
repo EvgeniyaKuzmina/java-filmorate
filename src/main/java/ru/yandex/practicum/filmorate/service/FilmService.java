@@ -24,7 +24,7 @@ public class FilmService {
     private final ValidationUser validationUser;
 
     //добавление лайка
-    public String addLike(Integer filmId, Integer userId) {
+    public String addLike(Long filmId, Long userId) {
         validationFilm.checkFilmById(filmId);
         validationUser.checkUserById(userId);
         User user = userStorage.getUsers().get(userId);
@@ -41,7 +41,7 @@ public class FilmService {
     }
 
     // удаление лайка
-    public String removeLike(Integer filmId, Integer userId) {
+    public String removeLike(Long filmId, Long userId) {
         validationFilm.checkFilmById(filmId);
         validationUser.checkUserById(userId);
         User user = userStorage.getUsers().get(userId);
@@ -57,7 +57,7 @@ public class FilmService {
     }
 
     // вывод наиболее популярных фильмов по количеству лайков.
-    public List<Film> mostPopularFilm(Integer count) {
+    public List<Film> mostPopularFilm(Long count) {
         List<Film> sortedFilms = filmStorage.getFilms().values().stream()
                                             .sorted(this::compare)
                                             .collect(Collectors.toList());

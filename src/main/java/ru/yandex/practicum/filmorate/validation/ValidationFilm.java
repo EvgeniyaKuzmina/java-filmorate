@@ -35,7 +35,7 @@ public class ValidationFilm {
         }
     }
 
-    public void checkFilmById(Integer id) {
+    public void checkFilmById(Long id) {
         if (!filmStorage.getFilms().containsKey(id)) {
             throw new FilmNotFoundException(String.format("Фильма c id %d нет", id));
         }

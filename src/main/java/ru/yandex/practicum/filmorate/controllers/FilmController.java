@@ -75,7 +75,7 @@ public class FilmController {
         if (Integer.parseInt(userId) <= 0) {
             throw new FilmNotFoundException(Constants.USER_ID_INCORRECT);
         }
-        return filmService.addLike(Integer.parseInt(id), Integer.parseInt(userId));
+        return filmService.addLike(Long.parseLong(id), Long.parseLong(userId));
     }
 
     //удаление лайка из фильма
@@ -95,13 +95,13 @@ public class FilmController {
         if (Integer.parseInt(userId) <= 0) {
             throw new UserNotFoundException(Constants.USER_ID_INCORRECT);
         }
-        return filmService.removeLike(Integer.parseInt(id), Integer.parseInt(userId));
+        return filmService.removeLike(Long.parseLong(id), Long.parseLong(userId));
     }
 
     // получение списка самых популярных фильмов
     @GetMapping("/popular")
     @ResponseBody
-    public List<Film> mostPopularFilm(@RequestParam(defaultValue = "10", required = false) Integer count) throws
+    public List<Film> mostPopularFilm(@RequestParam(defaultValue = "10", required = false) Long count) throws
                                                                                                           ValidationException {
         if (count == 0 || count < 1) {
             throw new ValidationException("Ошибка ввода поля count");

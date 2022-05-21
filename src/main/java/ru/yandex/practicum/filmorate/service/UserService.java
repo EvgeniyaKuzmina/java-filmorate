@@ -38,7 +38,7 @@ public class UserService {
     }
 
     // удаление из друзей
-    public String removeFriend(Integer userId, Integer friendId) {
+    public String removeFriend(Long userId, Long friendId) {
         if (!userStorage.getUsers().containsKey(userId)) {
             throw new UserNotFoundException(String.format(Constants.USER_NOT_EXIST, userId));
         }
@@ -58,7 +58,7 @@ public class UserService {
     }
 
     // вывод списка общих друзей
-    public List<User> getCommonFriends(Integer userId, Integer otherUserId) throws UserNotFoundException {
+    public List<User> getCommonFriends(Long userId, Long otherUserId) throws UserNotFoundException {
         validationUser.checkUserById(userId);
         validationUser.checkUserById(otherUserId);
         Set<Long> userFriends = new HashSet<>(userStorage.getUsers().get(userId)
@@ -76,7 +76,7 @@ public class UserService {
     }
 
     // получение списка друзей пользователя по id
-    public List<User> getUserFriendById(Integer id) {
+    public List<User> getUserFriendById(Long id) {
         validationUser.checkUserById(id);
         List<Long> userFriendsId = new ArrayList<>(userStorage.getUsers().get(id).getFriends());
         List<User> userFriends = new ArrayList<>();
