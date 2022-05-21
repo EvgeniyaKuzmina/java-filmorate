@@ -55,7 +55,7 @@ public class UserController {
         if (Integer.parseInt(id) <= 0) {
             throw new UserNotFoundException(Constants.USER_ID_INCORRECT);
         }
-        return userStorage.getUsersById(Integer.parseInt(id));
+        return userStorage.getUsersById(Long.parseLong(id));
     }
 
     // получаем список друзей общих с другим пользователем.
@@ -105,7 +105,7 @@ public class UserController {
         if (Integer.parseInt(id) <= 0 || Integer.parseInt(friendId) <= 0) {
             throw new UserNotFoundException(Constants.USER_ID_INCORRECT);
         }
-        return userService.addFriend(Integer.parseInt(id), Integer.parseInt(friendId));
+        return userService.addFriend(Long.parseLong(id), Long.parseLong(friendId));
     }
 
     //возвращаем список друзей пользователя

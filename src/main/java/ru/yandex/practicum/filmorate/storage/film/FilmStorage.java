@@ -21,7 +21,7 @@ public interface FilmStorage {
     String removeFilm(Film film);
 
     // получение фильма по id
-    Film getFilmById(Integer id);
+    Film getFilmById(Long id);
 
-    Map<Integer, Film> getFilms();
+    Map<Long, Film> getFilms();
 }

@@ -55,7 +55,7 @@ public class FilmController {
         if (Integer.parseInt(id) <= 0) {
             throw new FilmNotFoundException(Constants.FILM_ID_INCORRECT);
         }
-        return filmStorage.getFilmById(Integer.parseInt(id));
+        return filmStorage.getFilmById(Long.parseLong(id));
     }
 
     // Добавление лайка к фильму

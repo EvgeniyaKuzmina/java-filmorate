@@ -22,7 +22,7 @@ public class UserService {
     private final UserStorage userStorage;
 
     // метод для добавления в друзья
-    public String addFriend(Integer userId, Integer friendId) {
+    public String addFriend(Long userId, Long friendId) {
         if (!userStorage.getUsers().containsKey(userId)) {
             throw new UserNotFoundException(String.format(Constants.USER_NOT_EXIST, userId));
         }
@@ -61,15 +61,15 @@ public class UserService {
     public List<User> getCommonFriends(Integer userId, Integer otherUserId) throws UserNotFoundException {
         validationUser.checkUserById(userId);
         validationUser.checkUserById(otherUserId);
-        Set<Integer> userFriends = new HashSet<>(userStorage.getUsers().get(userId)
+        Set<Long> userFriends = new HashSet<>(userStorage.getUsers().get(userId)
                                                             .getFriends());
-        Set<Integer> otherUserFriends = new HashSet<>(userStorage.getUsers().get(otherUserId)
+        Set<Long> otherUserFriends = new HashSet<>(userStorage.getUsers().get(otherUserId)
                                                                  .getFriends());
-        List<Integer> commonIdFriend = userFriends.stream()
+        List<Long> commonIdFriend = userFriends.stream()
                                                   .filter(otherUserFriends::contains)
                                                   .collect(Collectors.toList());
         List<User> commonFriend = new ArrayList<>();
-        for (Integer id : commonIdFriend) {
+        for (Long id : commonIdFriend) {
             commonFriend.add(userStorage.getUsers().get(id));
         }
         return commonFriend;
@@ -78,9 +78,9 @@ public class UserService {
     // получение списка друзей пользователя по id
     public List<User> getUserFriendById(Integer id) {
         validationUser.checkUserById(id);
-        List<Integer> userFriendsId = new ArrayList<>(userStorage.getUsers().get(id).getFriends());
+        List<Long> userFriendsId = new ArrayList<>(userStorage.getUsers().get(id).getFriends());
         List<User> userFriends = new ArrayList<>();
-        for (Integer idUser : userFriendsId) {
+        for (Long idUser : userFriendsId) {
             userFriends.add(userStorage.getUsers().get(idUser));
         }
         return userFriends;

@@ -63,7 +63,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     // метод для получения пользователя по id
-    public User getUsersById(Integer id) {
+    public User getUsersById(Long id) {
         if (!users.containsKey(id)) {
             throw new UserNotFoundException(String.format(Constants.USER_NOT_EXIST, id));
         }
