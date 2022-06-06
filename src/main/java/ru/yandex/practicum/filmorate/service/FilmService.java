@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -15,13 +16,23 @@ import java.util.stream.Collectors;
 import static ru.yandex.practicum.filmorate.constant.Constants.STANDARD_SIZE;
 
 @Service
-@RequiredArgsConstructor
+
 public class FilmService {
 
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
     private final ValidationFilm validationFilm;
     private final ValidationUser validationUser;
+
+    public FilmService(@Qualifier("InMemoryFilmStorage") FilmStorage filmStorage,
+                       @Qualifier("InMemoryUserStorage") UserStorage userStorage,
+                       ValidationFilm validationFilm,
+                       ValidationUser validationUser) {
+        this.filmStorage = filmStorage;
+        this.userStorage = userStorage;
+        this.validationFilm = validationFilm;
+        this.validationUser = validationUser;
+    }
 
     //добавление лайка
     public String addLike(Long filmId, Long userId) {
