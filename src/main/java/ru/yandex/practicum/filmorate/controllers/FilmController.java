@@ -2,14 +2,14 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.constant.Constants;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmDbService;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,30 +18,31 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/films")
 public class FilmController {
-
-    private final FilmDbService filmService;
+    private final FilmStorage filmStorage;
+    private final FilmService filmService;
 
     @Autowired
-    public FilmController(@Qualifier("FilmDbService") FilmDbService filmService) {
+    public FilmController(FilmStorage filmStorage, FilmService filmService) {
+        this.filmStorage = filmStorage;
         this.filmService = filmService;
     }
 
     // добавление нового фильма
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
-        return filmService.createFilm(film);
+        return filmStorage.createFilm(film);
     }
 
     //обновление существующего фильма
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
-        return filmService.updateFilm(film);
+        return filmStorage.updateFilm(film);
     }
 
     // получение всех фильмов
     @GetMapping
     public List<Film> getAllFilms() {
-        return filmService.getAllFilms();
+        return filmStorage.getAllFilms();
     }
 
     //получение фильма по id
@@ -54,7 +55,7 @@ public class FilmController {
         if (Integer.parseInt(id) <= 0) {
             throw new FilmNotFoundException(Constants.FILM_ID_INCORRECT);
         }
-        return filmService.getFilmById(Long.parseLong(id));
+        return filmStorage.getFilmById(Long.parseLong(id));
     }
 
     // Добавление лайка к фильму
@@ -101,17 +102,11 @@ public class FilmController {
     @GetMapping("/popular")
     @ResponseBody
     public List<Film> mostPopularFilm(@RequestParam(defaultValue = "10", required = false) Long count) throws
-            ValidationException {
+                                                                                                          ValidationException {
         if (count == 0 || count < 1) {
             throw new ValidationException("Ошибка ввода поля count");
         }
         return filmService.mostPopularFilm(count);
-    }
-
-    @DeleteMapping(value = {"/{id}"})
-    @ResponseBody
-    public String removeUser(@PathVariable(required = false) String id) {
-        return filmService.removeFilm(Long.parseLong(id));
     }
 
 

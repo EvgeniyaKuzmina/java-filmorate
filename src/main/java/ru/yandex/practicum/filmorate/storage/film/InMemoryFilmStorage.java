@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.storage.film;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.constant.Constants;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
@@ -21,13 +20,11 @@ import java.util.Map;
 @Service
 @Getter
 @Setter
-@Qualifier("InMemoryFilmStorage")
 public class InMemoryFilmStorage implements FilmStorage {
 
     private final Map<Long, Film> films = new HashMap<>();
 
     // метод для добавления фильма
-    @Override
     public Film createFilm(Film film) throws ValidationException {
         ValidationFilm.checkDataOfRelease(film); // проверка даты релиза фильма
         ValidationFilm.checkDuration(film); // проверка продолжительности фильма
@@ -39,7 +36,6 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     // метод для изменения данных о фильме
-    @Override
     public Film updateFilm(Film film) throws ValidationException {
         if (films.containsKey(film.getId())) {
             Film upbFilm = films.get(film.getId());
@@ -59,13 +55,11 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     // метод для получения списка всех фильмов
-    @Override
     public List<Film> getAllFilms() {
         return new ArrayList<>(films.values());
     }
 
     // получение фильма по id
-    @Override
     public Film getFilmById(Long id) {
         if (!films.containsKey(id)) {
             throw new FilmNotFoundException(String.format(Constants.FILM_NOT_EXIST, id));
@@ -73,24 +67,8 @@ public class InMemoryFilmStorage implements FilmStorage {
         return films.get(id);
     }
 
-    @Override
-    public String addLike(Long filmId, Long userId) {
-        return null;
-    }
-
-    @Override
-    public String removeLike(Long filmId, Long userId) {
-        return null;
-    }
-
-    @Override
-    public List<Film> mostPopularFilm(Long count) {
-        return null;
-    }
-
     // метод удаления фильма
-    @Override
-    public String removeFilm(Long id) {
+    public String removeFilm(Film film) {
         return null;
     }
 }

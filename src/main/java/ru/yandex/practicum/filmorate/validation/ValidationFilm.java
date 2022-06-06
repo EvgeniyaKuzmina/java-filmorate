@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.validation;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
@@ -13,17 +13,11 @@ import java.time.LocalDate;
 
 @Slf4j
 @Service
-
+@RequiredArgsConstructor
 public class ValidationFilm {
 
     private static final LocalDate EARLIEST_DATA_OF_RELEASE = LocalDate.of(1895, 12, 28);
-
-
     private final FilmStorage filmStorage;
-
-    public ValidationFilm(@Qualifier("InMemoryFilmStorage") FilmStorage filmStorage) {
-        this.filmStorage = filmStorage;
-    }
 
     // проверка даты релиза
     public static void checkDataOfRelease(Film film) throws ValidationException {
