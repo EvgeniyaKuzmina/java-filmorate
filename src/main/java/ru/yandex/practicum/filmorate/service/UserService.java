@@ -1,10 +1,12 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.constant.Constants;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.validation.ValidationUser;
 
@@ -15,11 +17,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+
 public class UserService {
 
     private final ValidationUser validationUser;
+
+
     private final UserStorage userStorage;
+    public UserService(ValidationUser validationUser, @Qualifier("InMemoryUserStorage") UserStorage userStorage) {
+        this.validationUser = validationUser;
+        this.userStorage = userStorage;
+    }
+
+
 
     // метод для добавления в друзья
     public String addFriend(Long userId, Long friendId) {

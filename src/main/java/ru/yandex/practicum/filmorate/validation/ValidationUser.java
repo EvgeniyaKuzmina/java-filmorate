@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.validation;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.constant.Constants;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
@@ -13,10 +13,15 @@ import java.time.LocalDate;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+
 public class ValidationUser {
 
+
     private final UserStorage userStorage;
+
+    public ValidationUser(@Qualifier("InMemoryUserStorage") UserStorage userStorage) {
+        this.userStorage = userStorage;
+    }
 
     // проверка даты рождения пользователя
     public static void checkBirthDay(User user) throws ValidationException {

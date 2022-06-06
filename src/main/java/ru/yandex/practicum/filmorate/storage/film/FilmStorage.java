@@ -18,10 +18,19 @@ public interface FilmStorage {
     List<Film> getAllFilms();
 
     // метод удаления фильма
-    String removeFilm(Film film);
+    String removeFilm(Long id);
 
     // получение фильма по id
     Film getFilmById(Long id);
+
+    // добавление лайка
+    String addLike(Long filmId, Long userId);
+
+    // удаление лайка
+    String removeLike(Long filmId, Long userId);
+
+    //вывод наиболее популярных фильмов по количеству лайков.
+    List<Film> mostPopularFilm(Long count);
 
     Map<Long, Film> getFilms();
 }
