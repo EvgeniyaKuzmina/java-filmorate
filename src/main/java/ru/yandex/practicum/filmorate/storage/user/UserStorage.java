@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
-import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -20,26 +19,10 @@ public interface UserStorage {
     List<User> getAllUsers();
 
     // метод удаления пользователя
-    String removeUser(Long id);
+    String removeUser(User user);
 
     // получение пользователя по id
     User getUsersById(Long id);
 
     Map<Long, User> getUsers();
-
-    void setUsers(long id, User newUser);
-
-    // добавление пользователя в друзья
-    String addFriend(Long userId, Long friendId);
-
-    // удаление из друзей
-    String removeFriend(Long userId, Long friendId);
-
-    // получение списка общих друзей
-    List<User> getCommonFriends(Long userId, Long otherUserId) throws UserNotFoundException;
-
-    // получение списка друзей пользователя
-    List<User> getUserFriendById(Long id);
-
-    //void users(Long id, User user);
 }
