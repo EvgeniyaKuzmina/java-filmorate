@@ -13,16 +13,13 @@ import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.RatingМРАА;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.FilmDbStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserDbStorage;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,11 +36,15 @@ class FilmorateApplicationTest {
     static private Film film;
     static private Film filmWithId;
     static private Film updFilm;
+    private static Map<String, Object> mpa = new HashMap<>();
     private final UserDbStorage userStorage;
     private final FilmDbStorage filmStorage;
 
     @BeforeAll
     static void beforeAll() throws ValidationException {
+        mpa = new HashMap<>();
+        mpa.put("id", 1L);
+        //  mpa.put("name", RatingМРАА.R);
         userWithId = User.builder()
                 .id(1L)
                 .email("mail@mail.ru")
@@ -71,7 +72,7 @@ class FilmorateApplicationTest {
                 .description("description about film")
                 .duration(Duration.ofMinutes(120))
                 .releaseDate(LocalDate.of(2000, 1, 12))
-                .mpa(RatingМРАА.R)
+                .mpa(mpa)
                 .genre(List.of(Genre.DOCUMENTARY))
                 .build();
 
@@ -81,7 +82,7 @@ class FilmorateApplicationTest {
                 .description("description about film")
                 .duration(Duration.ofMinutes(120))
                 .releaseDate(LocalDate.of(2000, 1, 12))
-                .mpa(RatingМРАА.R)
+                .mpa(mpa)
                 .genre(List.of(Genre.DOCUMENTARY))
                 .build();
         updFilm = Film.builder()
@@ -90,7 +91,7 @@ class FilmorateApplicationTest {
                 .description("New description about film")
                 .duration(Duration.ofMinutes(130))
                 .releaseDate(LocalDate.of(2000, 1, 12))
-                .mpa(RatingМРАА.R)
+                .mpa(mpa)
                 .genre(List.of(Genre.DRAMA))
                 .build();
     }
@@ -252,8 +253,7 @@ class FilmorateApplicationTest {
         assertThat(filmOptional)
                 .isPresent()
                 .hasValueSatisfying(user ->
-                        assertThat(user).hasFieldOrPropertyWithValue("rating",
-                                RatingМРАА.R)
+                        assertEquals(user.getMpa(), mpa)
                 );
         assertThat(filmOptional)
                 .isPresent()
@@ -304,8 +304,8 @@ class FilmorateApplicationTest {
         assertThat(filmOptional)
                 .isPresent()
                 .hasValueSatisfying(user ->
-                        assertThat(user).hasFieldOrPropertyWithValue("rating",
-                                RatingМРАА.R)
+                        assertThat(user).hasFieldOrPropertyWithValue("mpa",
+                                mpa)
                 );
         assertThat(filmOptional)
                 .isPresent()
@@ -343,8 +343,6 @@ class FilmorateApplicationTest {
         List<Film> popularFilms = filmStorage.mostPopularFilm(1L);
         popularFilms.forEach(film -> assertThat(film).isEqualTo(filmStorage.getFilmById(1L)));
     }
-
-
 
 
 }
