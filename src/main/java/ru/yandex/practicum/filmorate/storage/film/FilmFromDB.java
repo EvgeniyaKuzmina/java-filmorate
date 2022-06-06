@@ -49,7 +49,7 @@ public class FilmFromDB {
        // values.put("name", RatingМРАА.gerRatingMPAA(rs.getString("rating")));
         return values;
     }
-    
+
     public static Genre filmGenre(ResultSet rs) throws SQLException {
         return Genre.getGenreName(rs.getString("genre"));
     }
