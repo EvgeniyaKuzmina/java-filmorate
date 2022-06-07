@@ -25,7 +25,7 @@ public enum RatingМРАА {
     }
 
     static public int getRatingId(Film film) {
-        switch (Integer.parseInt(film.getMpa().get("id").toString())) {
+        switch (Integer.parseInt(film.getMpa().getId().toString())) {
             case 1:
                 return 1;
             case 2:
