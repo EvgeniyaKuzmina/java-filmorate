@@ -9,9 +9,9 @@ import java.time.LocalDate;
 import java.util.HashSet;
 
 public class UserFromDB {
+    private final static String SQL_GET_FRIENDS = "select friend_id from friends where user_id = ?";
 
     public static User makeUser(ResultSet rs, JdbcTemplate jdbcTemplate) throws SQLException {
-        String sqlFriends = "select friend_id from friends where user_id = ?";
         Long id = rs.getLong("id");
         String email = rs.getString("email");
         String login = rs.getString("login");
@@ -25,11 +25,11 @@ public class UserFromDB {
                 .birthday(birthday)
                 .build();
 
-        user.setFriends(new HashSet<>(jdbcTemplate.query(sqlFriends, (rsFriends, rowNum) -> friendId(rsFriends), id)));
+        user.setFriends(new HashSet<>(jdbcTemplate.query(SQL_GET_FRIENDS, (rsFriends, rowNum) -> friendId(rsFriends), id)));
         return user;
     }
 
-    public static Long friendId (ResultSet rs) throws SQLException {
+    public static Long friendId(ResultSet rs) throws SQLException {
         return rs.getLong("friend_id");
 
 

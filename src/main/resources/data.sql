@@ -21,6 +21,8 @@ insert into genre (genre) values ('комедия'),
 
 
 
+
+
 /*drop table RATING;
 drop table FILM_RATING;
 drop table FILM_GENRE;

@@ -11,18 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.RatingМРАА;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.*;
 import ru.yandex.practicum.filmorate.storage.film.FilmDbStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserDbStorage;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,13 +32,18 @@ class FilmorateApplicationTest {
     static private User userWithId;
     static private User updUser;
     static private Film film;
-    static private Film filmWithId;
     static private Film updFilm;
+    private static Mpa mpa;
     private final UserDbStorage userStorage;
     private final FilmDbStorage filmStorage;
 
     @BeforeAll
-    static void beforeAll() throws ValidationException {
+    static void beforeAll() {
+        mpa = Mpa.builder()
+                .id(1L)
+                .mpa(RatingМРАА.G)
+                .build();
+        //  mpa.put("name", RatingМРАА.R);
         userWithId = User.builder()
                 .id(1L)
                 .email("mail@mail.ru")
@@ -71,26 +71,17 @@ class FilmorateApplicationTest {
                 .description("description about film")
                 .duration(Duration.ofMinutes(120))
                 .releaseDate(LocalDate.of(2000, 1, 12))
-                .mpa(RatingМРАА.R)
+                .mpa(mpa)
                 .genre(List.of(Genre.DOCUMENTARY))
                 .build();
 
-        filmWithId = Film.builder()
-                .id(2L)
-                .name("film")
-                .description("description about film")
-                .duration(Duration.ofMinutes(120))
-                .releaseDate(LocalDate.of(2000, 1, 12))
-                .mpa(RatingМРАА.R)
-                .genre(List.of(Genre.DOCUMENTARY))
-                .build();
         updFilm = Film.builder()
                 .id(2L)
                 .name("New film")
                 .description("New description about film")
                 .duration(Duration.ofMinutes(130))
                 .releaseDate(LocalDate.of(2000, 1, 12))
-                .mpa(RatingМРАА.R)
+                .mpa(mpa)
                 .genre(List.of(Genre.DRAMA))
                 .build();
     }
@@ -175,8 +166,8 @@ class FilmorateApplicationTest {
 
     // проверяем удаление пользователя
     @Test
-    public void testRemoveUser() throws ValidationException {
-        Optional<User> userOptional = Optional.of(userStorage.getUsersById(6L));
+    public void testRemoveUser() {
+        userStorage.getUsersById(6L);
         userStorage.removeUser(6L);// удаляем пользователя 6
         Throwable ex = Assertions.assertThrows(
                 UserNotFoundException.class,
@@ -187,7 +178,7 @@ class FilmorateApplicationTest {
 
     // проверяем добавление и удаление из друзей
     @Test
-    public void testAddAndRemoveFriend() throws ValidationException {
+    public void testAddAndRemoveFriend() {
         String answerAdd = userStorage.addFriend(3L, 4L); // добавили в друзья пользвателя 4
         assertThat(answerAdd).isEqualTo("Пользователь 3 — Nick Name подписался на пользователя 4 — Nick Name.");
         String answerRemove = userStorage.removeFriend(3L, 4L); // удалили из друзей пользователя 4
@@ -196,7 +187,7 @@ class FilmorateApplicationTest {
 
     // проверяем получение списка общих друзей
     @Test
-    public void testGetCommonFriends() throws ValidationException {
+    public void testGetCommonFriends() {
         userStorage.addFriend(2L, 1L); // добавили к юзеру 2 в друзья пользвателя 1
         userStorage.addFriend(3L, 1L); // добавили к юзеру 3 в друзья пользвателя 1
         List<User> commonFriends = userStorage.getCommonFriends(2L, 3L);
@@ -205,7 +196,7 @@ class FilmorateApplicationTest {
 
     // проверяем получение списка друзей по id пользователя
     @Test
-    public void testGetUserFriendById() throws ValidationException {
+    public void testGetUserFriendById()  {
         userStorage.addFriend(2L, 1L); // добавили к юзеру 2 в друзья пользвателя 1
         List<User> userFriends = userStorage.getUserFriendById(2L);
         userFriends.forEach(user -> assertThat(user).isEqualTo(userWithId)); //
@@ -252,8 +243,7 @@ class FilmorateApplicationTest {
         assertThat(filmOptional)
                 .isPresent()
                 .hasValueSatisfying(user ->
-                        assertThat(user).hasFieldOrPropertyWithValue("rating",
-                                RatingМРАА.R)
+                        assertEquals(user.getMpa(), mpa)
                 );
         assertThat(filmOptional)
                 .isPresent()
@@ -266,7 +256,7 @@ class FilmorateApplicationTest {
 
     // обновление данных фильма
     @Test
-    public void testUpdateFilm() throws ValidationException {
+    public void testUpdateFilm() {
         Optional<Film> filmOptional = Optional.of(filmStorage.updateFilm(updFilm)); // обновили фильм 2
         // получили обновлённого юзера
         assertThat(filmOptional)
@@ -304,8 +294,8 @@ class FilmorateApplicationTest {
         assertThat(filmOptional)
                 .isPresent()
                 .hasValueSatisfying(user ->
-                        assertThat(user).hasFieldOrPropertyWithValue("rating",
-                                RatingМРАА.R)
+                        assertThat(user).hasFieldOrPropertyWithValue("mpa",
+                                mpa)
                 );
         assertThat(filmOptional)
                 .isPresent()
@@ -317,8 +307,8 @@ class FilmorateApplicationTest {
 
     // проверяем удаление фильма
     @Test
-    public void testRemoveFilm() throws ValidationException {
-        Optional<Film> filmOptional = Optional.of(filmStorage.getFilmById(6L));
+    public void testRemoveFilm() {
+        filmStorage.getFilmById(6L);
         filmStorage.removeFilm(6L);// удаляем фильм 6
         Throwable ex = Assertions.assertThrows(
                 FilmNotFoundException.class,
@@ -329,7 +319,7 @@ class FilmorateApplicationTest {
 
     // проверяем добавление и удаление лайка
     @Test
-    public void testAddAndRemoveLike() throws ValidationException {
+    public void testAddAndRemoveLike() {
         String answerAdd = filmStorage.addLike(1L, 1L); // пользователь 1 поставил лайк фильму 1
         assertThat(answerAdd).isEqualTo("Пользователь Nick Name поставил like фильму film");
         String answerRemove = filmStorage.removeLike(1L, 1L); // удалили лайк
@@ -338,13 +328,11 @@ class FilmorateApplicationTest {
 
     // проверяем получение списка самых популярных фильмов
     @Test
-    public void testMostPopularFilm() throws ValidationException {
+    public void testMostPopularFilm() {
         String answerAdd = filmStorage.addLike(1L, 4L); // пользователь 4 поставил лайк фильму 1
         List<Film> popularFilms = filmStorage.mostPopularFilm(1L);
         popularFilms.forEach(film -> assertThat(film).isEqualTo(filmStorage.getFilmById(1L)));
     }
-
-
 
 
 }

@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -33,7 +32,7 @@ public class Film {
     private String description;
     private List<Genre> genre;
     @NotNull
-    private Map<String, Object> mpa;
+    private Mpa mpa;
 
     public void setLike(User user) {
         likes.add(user.getId());
