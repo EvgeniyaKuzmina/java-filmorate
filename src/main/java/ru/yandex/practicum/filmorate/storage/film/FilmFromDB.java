@@ -11,9 +11,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 public class FilmFromDB {
 
@@ -33,7 +31,6 @@ public class FilmFromDB {
         String description = rs.getString("description");
         Duration duration = Duration.ofSeconds((long) rs.getDouble("duration"));
         LocalDate releasedate = rs.getDate("releasedate").toLocalDate();
-        Map<String, Object> rating = toMap(rs);
         Mpa mpa = toMpa(rs);
         Film film = Film.builder()
                 .id(id)
@@ -46,13 +43,6 @@ public class FilmFromDB {
         film.setLikes(new HashSet<>(jdbcTemplate.query(SQL_LIKES, (rsLikes, rowNum) -> userId(rsLikes), id)));
         film.setGenre(new ArrayList<>(jdbcTemplate.query(SQL_GENRE, (rsGenre, rowNum) -> filmGenre(rsGenre), id)));
         return film;
-    }
-
-    private static Map<String, Object> toMap(ResultSet rs) throws SQLException {
-        Map<String, Object> values = new HashMap<>();
-        values.put("id", rs.getLong("id_r"));
-        // values.put("name", RatingМРАА.gerRatingMPAA(rs.getString("rating")));
-        return values;
     }
 
     private static Mpa toMpa(ResultSet rs) throws SQLException {
