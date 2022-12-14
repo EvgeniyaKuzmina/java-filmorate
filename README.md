@@ -1,5 +1,5 @@
 # java-filmorate
-Template repository for Filmorate project.
+Spring Boot, Hibernate, Maven, PosgreSql, H2, Lombok, Docker
 
 ## DataBase
 Link to application database: https://dbdiagram.io/d/6280e1207f945876b61eae22
