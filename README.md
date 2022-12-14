@@ -1,5 +1,5 @@
 # java-filmorate
-Spring Boot, Hibernate, Maven, H2, Lombok, Docker
+Spring Boot, Maven, H2, Lombok, Docker
 
 ## DataBase
 Link to application database: https://dbdiagram.io/d/6280e1207f945876b61eae22
