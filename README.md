@@ -1,7 +1,9 @@
 # java-filmorate
-Spring Boot, Maven, H2, Lombok, Docker
+Spring Boot, Maven, H2, Lombok
 
-## DataBase
+## Backend for the service, for working with movies and user ratings, with the ability to return the top 5 movies recommended for viewing.
+
+### DataBase
 Link to application database: https://dbdiagram.io/d/6280e1207f945876b61eae22
 
 DataBase has several tables:
